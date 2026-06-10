@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="675" viewBox="0 0 900 675" role="img" aria-label="Ponto Controle">
+  <rect width="900" height="675" fill="#f4f7fb"/>
+  <rect x="180" y="120" width="540" height="420" rx="32" fill="#ffffff" stroke="#d8dee9" stroke-width="6"/>
+  <rect x="250" y="208" width="260" height="34" rx="10" fill="#dbeafe"/>
+  <rect x="250" y="290" width="160" height="130" rx="18" fill="#2563eb"/>
+  <rect x="438" y="290" width="92" height="130" rx="18" fill="#facc15"/>
+  <rect x="558" y="290" width="92" height="130" rx="18" fill="#16a34a"/>
+  <text x="450" y="512" text-anchor="middle" fill="#111827" font-family="Arial, sans-serif" font-size="44" font-weight="800">Ponto Controle</text>
+</svg>

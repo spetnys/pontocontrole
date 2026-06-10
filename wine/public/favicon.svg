@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ponto Controle">
+  <rect width="64" height="64" rx="14" fill="#111827"/>
+  <circle cx="32" cy="32" r="20" fill="#2563eb"/>
+  <path d="M22 33h8v11h-8V33Zm12-13h8v24h-8V20Zm-22 8h8v16h-8V28Z" fill="#ffffff"/>
+  <path d="M45 18l7 7-19 19-8-8 6-6 2 2 12-14Z" fill="#facc15"/>
+</svg>

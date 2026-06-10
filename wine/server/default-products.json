@@ -1,0 +1,74 @@
+[
+  {
+    "id": "tequila-jose-cuervo",
+    "title": "Tequila Silver Jose Cuervo Especial Garrafa 750ml",
+    "category": "Destilados",
+    "badge": "Vendido por Varinha",
+    "price": "Ver oferta",
+    "description": "Tequila prata de origem mexicana, com perfil cítrico e boa escolha para servir pura ou em coquetéis.",
+    "details": ["750 ml", "40% alc.", "Origem México"],
+    "image": "https://images.unsplash.com/photo-1607446045710-d5a8fdc8916c?auto=format&fit=crop&w=900&q=85",
+    "link": "https://www.mercadolivre.com.br/tequila-silver-jose-cuervo-especial-garrafa-750ml/p/MLB16200443",
+    "active": true
+  },
+  {
+    "id": "caneca-stanley",
+    "title": "Caneca Stanley Adventure Big Grip 709ml Verde",
+    "category": "Acessórios",
+    "badge": "Vendido por Varinha",
+    "price": "R$ 289,90",
+    "description": "Caneca térmica em aço inox com alça, parede dupla e conservação para manter a bebida gelada por horas.",
+    "details": ["709 ml", "Aço inox", "Parede dupla"],
+    "image": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=900&q=85",
+    "link": "https://www.mercadolivre.com.br/caneca-stanley-adventure-big-grip-cor-hammertone-green-709ml-cor-verde-liso/p/MLB22242627",
+    "active": true
+  },
+  {
+    "id": "catalogo-varinha",
+    "title": "Catálogo de bebidas Varinha",
+    "category": "Bebidas",
+    "badge": "12 produtos",
+    "price": "12 itens",
+    "description": "Vitrine completa de bebidas da Varinha no Mercado Livre para comparar opções e comprar online.",
+    "details": ["Compra online", "Estoque atualizado", "Mercado Livre"],
+    "image": "https://images.unsplash.com/photo-1558001373-7b93ee48ffa0?auto=format&fit=crop&w=900&q=85",
+    "link": "https://lista.mercadolivre.com.br/pagina/varinha/lista/alimentos-bebidas/bebidas/?tracking_id=fa634fdecbae8551cc5a0505608e3bcc#applied_filter_id%3Dcategory%26applied_filter_name%3DCategorias%26applied_filter_order%3D4%26applied_value_id%3DMLB278123%26applied_value_name%3DBebidas%26applied_value_order%3D1%26applied_value_results%3D12%26is_custom%3Dfalse",
+    "active": true
+  },
+  {
+    "id": "drinks-fim-de-semana",
+    "title": "Seleção para drinks de fim de semana",
+    "category": "Kits",
+    "badge": "Drinks",
+    "price": "Ver opções",
+    "description": "Bebidas e acessórios para preparar drinks em casa sem complicação.",
+    "details": ["Drinks", "Presentes", "Bar em casa"],
+    "image": "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=900&q=85",
+    "link": "https://lista.mercadolivre.com.br/pagina/varinha/lista/alimentos-bebidas/bebidas/?tracking_id=fa634fdecbae8551cc5a0505608e3bcc#applied_filter_id%3Dcategory%26applied_filter_name%3DCategorias%26applied_filter_order%3D4%26applied_value_id%3DMLB278123%26applied_value_name%3DBebidas%26applied_value_order%3D1%26applied_value_results%3D12%26is_custom%3Dfalse",
+    "active": true
+  },
+  {
+    "id": "presentes-bebidas",
+    "title": "Garrafas e acessórios para presentear",
+    "category": "Kits",
+    "badge": "Presente",
+    "price": "Ver vitrine",
+    "description": "Opções para aniversário, churrasco, jantar e datas especiais.",
+    "details": ["Fácil de escolher", "Entrega", "Ocasiões"],
+    "image": "https://images.unsplash.com/photo-1547595628-c61a29f496f0?auto=format&fit=crop&w=900&q=85",
+    "link": "https://lista.mercadolivre.com.br/pagina/varinha/lista/alimentos-bebidas/bebidas/?tracking_id=fa634fdecbae8551cc5a0505608e3bcc#applied_filter_id%3Dcategory%26applied_filter_name%3DCategorias%26applied_filter_order%3D4%26applied_value_id%3DMLB278123%26applied_value_name%3DBebidas%26applied_value_order%3D1%26applied_value_results%3D12%26is_custom%3Dfalse",
+    "active": true
+  },
+  {
+    "id": "adega-em-casa",
+    "title": "Escolhas para receber em casa",
+    "category": "Bebidas",
+    "badge": "Casa",
+    "price": "Comprar online",
+    "description": "Produtos para completar a adega e receber melhor em qualquer ocasião.",
+    "details": ["Jantar", "Churrasco", "Celebração"],
+    "image": "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=900&q=85",
+    "link": "https://lista.mercadolivre.com.br/pagina/varinha/lista/alimentos-bebidas/bebidas/?tracking_id=fa634fdecbae8551cc5a0505608e3bcc#applied_filter_id%3Dcategory%26applied_filter_name%3DCategorias%26applied_filter_order%3D4%26applied_value_id%3DMLB278123%26applied_value_name%3DBebidas%26applied_value_order%3D1%26applied_value_results%3D12%26is_custom%3Dfalse",
+    "active": true
+  }
+]

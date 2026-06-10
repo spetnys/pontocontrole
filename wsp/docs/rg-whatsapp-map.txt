@@ -1,0 +1,71 @@
+src/db/database.js:1077:  ensureColumn(db, "whatsapp_messages", "remote_name", "TEXT");
+src/db/database.js:1078:  ensureColumn(db, "whatsapp_messages", "message_type", "TEXT NOT NULL DEFAULT 'text'");
+src/db/database.js:1079:  ensureColumn(db, "whatsapp_messages", "attachment_url", "TEXT");
+src/db/database.js:1080:  ensureColumn(db, "whatsapp_messages", "mime_type", "TEXT");
+src/db/database.js:1081:  ensureColumn(db, "whatsapp_threads", "remote_name", "TEXT");
+src/db/database.js:1082:  ensureColumn(db, "whatsapp_threads", "last_message_text", "TEXT");
+src/db/database.js:1083:  ensureColumn(db, "whatsapp_threads", "unread_count", "INTEGER NOT NULL DEFAULT 0");
+src/db/database.js:1374:  db.exec("CREATE INDEX IF NOT EXISTS idx_whatsapp_messages_lookup ON whatsapp_messages(gabinete_id, created_at, remote_phone);");
+src/db/database.js:1375:  db.exec("CREATE INDEX IF NOT EXISTS idx_whatsapp_messages_provider_id ON whatsapp_messages(gabinete_id, instance_name, provider_message_id);");
+src/db/database.js:1376:  db.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_whatsapp_threads_phone ON whatsapp_threads(gabinete_id, remote_phone);");
+src/db/database.js:1865:        INSERT INTO whatsapp_templates (
+src/db/database.js:2748:  CREATE TABLE IF NOT EXISTS whatsapp_templates (
+src/db/database.js:3224:  CREATE TABLE IF NOT EXISTS whatsapp_messages (
+src/db/database.js:3230:    template_id INTEGER REFERENCES whatsapp_templates(id) ON DELETE SET NULL,
+src/db/database.js:3248:  CREATE TABLE IF NOT EXISTS whatsapp_threads (
+src/server.js:180:const EVOLUTION_BASE_URL = String(process.env.EVOLUTION_BASE_URL || "").trim().replace(/\/+$/, "");
+src/server.js:299:const WHATSAPP_ATTACHMENT_ALLOWED_FILE_TYPES = new Set([
+src/server.js:305:const WHATSAPP_ATTACHMENT_MAX_FILE_BYTES = 10 * 1024 * 1024;
+src/server.js:3386:  return Boolean(EVOLUTION_BASE_URL && EVOLUTION_GLOBAL_API_KEY);
+src/server.js:3389:function buildWhatsappConnectorSummary(gabinete) {
+src/server.js:3402:function reserveWhatsappQrCooldown(cooldownKey) {
+src/server.js:4245:    || pathname.startsWith("/api/whatsapp/webhook/")
+src/server.js:4400:    whatsapp_templates: listWhatsappTemplates(gabineteId).map((item) => ({
+src/server.js:6121:  const whatsappWebhookMatch = pathname.match(/^\/api\/whatsapp\/webhook\/([a-z0-9-]+)$/);
+src/server.js:6388:        UPDATE whatsapp_threads
+src/server.js:9377:      whatsapp_templates: listWhatsappTemplates(gabinete.id),
+src/server.js:10533:        FROM whatsapp_templates
+src/server.js:10546:        FROM whatsapp_templates
+src/server.js:11897:  const baseUrl = `${EVOLUTION_BASE_URL}${pathname}`;
+src/server.js:11912:  const url = new URL("/instance/fetchInstances", EVOLUTION_BASE_URL);
+src/server.js:11960:  const url = new URL(`/instance/connect/${encodeURIComponent(instanceName)}`, EVOLUTION_BASE_URL);
+src/server.js:12019:  return fetchEvolutionJson(`/webhook/set/${encodeURIComponent(instanceName)}`, {
+src/server.js:12024:        url: `${origin}/api/whatsapp/webhook/${encodeURIComponent(instanceName)}`,
+src/server.js:12035:  if (!WHATSAPP_ATTACHMENT_ALLOWED_FILE_TYPES.has(String(file.type || "").toLowerCase())) {
+src/server.js:12038:  if (Number(file.size || 0) <= 0 || Number(file.size || 0) > WHATSAPP_ATTACHMENT_MAX_FILE_BYTES) {
+src/server.js:12077:async function resolveWhatsappConnectorState(gabinete) {
+src/server.js:12394:        FROM whatsapp_messages wm
+src/server.js:12398:        LEFT JOIN whatsapp_templates tpl ON tpl.id = wm.template_id AND tpl.gabinete_id = wm.gabinete_id
+src/server.js:12428:        FROM whatsapp_threads wt
+src/server.js:12544:function saveWhatsappThread(gabineteId, userId, body = {}) {
+src/server.js:12570:        FROM whatsapp_threads
+src/server.js:12608:        UPDATE whatsapp_threads
+src/server.js:12636:        INSERT INTO whatsapp_threads (
+src/server.js:12656:        FROM whatsapp_threads wt
+src/server.js:12671:function createWhatsappMessageLog(gabineteId, userId, body, providerPayload = null) {
+src/server.js:12675:      INSERT INTO whatsapp_messages (
+src/server.js:12692:    template_id: scopedReferenceId(gabineteId, "whatsapp_templates", body.template_id),
+src/server.js:12712:async function handleWhatsappWebhookPayload(instanceName, payload = {}) {
+src/server.js:12797:          FROM whatsapp_messages
+src/server.js:12812:function extractEvolutionWebhookMessages(payload = {}, fallbackInstanceName = "") {
+src/server.js:12829:function normalizeEvolutionWebhookMessage(item = {}, payload = {}, fallbackInstanceName = "") {
+src/server.js:14483:    ["whatsapp_messages", "contact_id"],
+src/server.js:14484:    ["whatsapp_threads", "contact_id"],
+src/server.js:16267:  whatsapp_templates: "whatsapp_templates",
+src/server.js:18203:      `UPDATE whatsapp_messages SET ticket_id = NULL, updated_at = :updated_at WHERE gabinete_id = :gabinete_id AND ticket_id IN (${placeholders})`,
+src/server.js:18206:      `UPDATE whatsapp_threads SET ticket_id = NULL, updated_at = :updated_at WHERE gabinete_id = :gabinete_id AND ticket_id IN (${placeholders})`,
+src/server.js:20321:      ["whatsapp_messages", "mensagem de WhatsApp"],
+src/server.js:20380:      ["whatsapp_messages", "mensagem de WhatsApp", ""],
+src/server.js:20729:    "whatsapp_messages",
+src/server.js:20730:    "whatsapp_threads",
+src/server.js:20908:  (Array.isArray(data.whatsapp_messages) ? data.whatsapp_messages : []).forEach((row) => add(row.attachment_url));
+src/server.js:20973:    whatsapp_templates:
+src/server.js:20974:      "SELECT * FROM whatsapp_templates WHERE gabinete_id = :gabinete_id ORDER BY kind, id",
+src/server.js:20996:    whatsapp_messages: "SELECT * FROM whatsapp_messages WHERE gabinete_id = :gabinete_id ORDER BY id",
+src/server.js:21174:    "whatsapp_templates",
+src/server.js:21194:    "whatsapp_messages",
+src/server.js:21205:    "whatsapp_messages",
+src/server.js:21220:    "whatsapp_templates",
+src/server.js:21346:  "whatsapp_messages",
+src/server.js:21347:  "whatsapp_threads",
+src/server.js:21411:    "SELECT attachment_url AS url FROM whatsapp_messages WHERE gabinete_id = :gabinete_id",

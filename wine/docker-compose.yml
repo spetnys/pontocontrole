@@ -1,0 +1,90 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: ponto-controle-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ponto_controle}
+      POSTGRES_USER: ${POSTGRES_USER:-ponto_controle}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env}
+    volumes:
+      - ponto_controle_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+    container_name: ponto-controle-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-ponto_controle}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-ponto_controle}
+      DATA_DIR: /data
+      PORT: ${PORT:-3000}
+      SITE_URL: ${SITE_URL:-https://adegaweb.com.br}
+      MASTER_USER: ${MASTER_USER:-sheila}
+      MASTER_PASSWORD: ${MASTER_PASSWORD:-ADMINISTRADOR}
+      SESSION_HOURS: ${SESSION_HOURS:-12}
+      OLIST_API_BASE_URL: ${OLIST_API_BASE_URL:-https://api.tiny.com.br/api2}
+      OLIST_ERP_API_TOKEN: ${OLIST_ERP_API_TOKEN:-}
+      OLIST_MAX_PAGES: ${OLIST_MAX_PAGES:-20}
+      EVOLUTION_BASE_URL: ${EVOLUTION_BASE_URL:-}
+      EVOLUTION_MANAGER_URL: ${EVOLUTION_MANAGER_URL:-}
+      EVOLUTION_GLOBAL_API_KEY: ${EVOLUTION_GLOBAL_API_KEY:-}
+    expose:
+      - "3000"
+    volumes:
+      - ponto_controle_data:/data
+
+  backup:
+    image: postgres:16-alpine
+    container_name: ponto-controle-backup
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env}
+      POSTGRES_DB: ${POSTGRES_DB:-ponto_controle}
+      POSTGRES_USER: ${POSTGRES_USER:-ponto_controle}
+    volumes:
+      - ../base de dados/backups:/backups
+    command:
+      - sh
+      - -c
+      - |
+        while true; do
+          pg_dump -h db -U "$$POSTGRES_USER" "$$POSTGRES_DB" > "/backups/ponto-controle-$$(date +%Y%m%d-%H%M%S).sql"
+          find /backups -type f -name 'ponto-controle-*.sql' -mtime +14 -delete
+          sleep 86400
+        done
+
+  adegaweb:
+    image: caddy:2-alpine
+    container_name: adegaweb
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  ponto_controle_postgres:
+    name: adegaweb_ponto_controle_postgres
+  ponto_controle_data:
+    name: adegaweb_ponto_controle_data
+  caddy_data:
+    name: adegaweb_caddy_data
+  caddy_config:
+    name: adegaweb_caddy_config

@@ -1,0 +1,28 @@
+services:
+  gabinete360:
+    build: .
+    container_name: gabinete360
+    restart: always
+    env_file:
+      - .env.production
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - TZ=America/Sao_Paulo
+      - GABINETE360_HOST=0.0.0.0
+      - VIRTUAL_HOST=gabinete.guiapj.com.br
+      - VIRTUAL_PORT=3000
+      - CLIENT_MAX_BODY_SIZE=10g
+      - LETSENCRYPT_HOST=gabinete.guiapj.com.br
+      - LETSENCRYPT_EMAIL=suporte@guiapj.com.br
+    expose:
+      - "3000"
+    volumes:
+      - ./data:/app/data
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: ticketz-docker-acme_nginx-proxy

@@ -1,0 +1,35 @@
+# Dependencies and build outputs
+node_modules/
+dist/
+build/
+coverage/
+
+# Runtime data, databases and backups
+base de dados/
+wine/data/
+*.sqlite
+*.sqlite3
+*.db
+*.sql
+*.dump
+*.backup
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+wine/.env
+wine/.env.*
+!wine/.env.example
+
+# Logs and temporary files
+*.log
+logs/
+tmp/
+.DS_Store
+
+# Tool/runtime folders
+.cache/
+.vite/
+.npm/
+
