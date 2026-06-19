@@ -5,6 +5,7 @@
   --accent: #2563eb;
   --app-surface: #ffffff;
   --app-text: #111827;
+  --ink: var(--app-text);
   --muted: #64748b;
   --line: #d8dee9;
   --soft: #f4f7fb;
@@ -29,6 +30,7 @@
   color-scheme: dark;
   --app-surface: #211f1d;
   --app-text: #feefe1;
+  --ink: var(--app-text);
   --muted: #b9afa4;
   --line: #3e3832;
   --soft: #1c1a18;
@@ -4839,4 +4841,93 @@ th {
 .dark::view-transition-old(root),
 .dark::view-transition-new(root) {
   mix-blend-mode: normal;
+}
+
+.dark :where(
+  .app-content,
+  .dashboard-view,
+  .form-panel,
+  .detail-panel,
+  .empty-panel,
+  .report-panel,
+  .metric-card,
+  .master-company-section,
+  .finance-chart-panel,
+  .client-services-field,
+  .client-service-option,
+  .paid-summary,
+  .table-wrap,
+  .clean-table,
+  .agenda-shell,
+  .agenda-month-view,
+  .agenda-week-column,
+  .agenda-day-row,
+  .whatsapp-crm,
+  .whatsapp-qr-only-card,
+  .whatsapp-qr-card,
+  .whatsapp-empty-chat,
+  .user-table-row,
+  .user-table-head,
+  .kanban-column,
+  .kanban-card,
+  .activity-card,
+  .client-portal-card,
+  .client-portal-hero
+) :where(h1, h2, h3, h4, h5, h6, p, label, legend, strong, b, span, small, td, th, li, summary) {
+  color: var(--app-text);
+}
+
+.dark :where(
+  .form-hint,
+  .date-row,
+  .finance-chart-legend,
+  .compact-list span,
+  .compact-link,
+  .clean-table td,
+  .clean-table small,
+  .dashboard-hero p,
+  .user-create-card p,
+  .user-table-summary span:not(.status-pill),
+  .client-services-field small,
+  .client-contract-grid label,
+  .paid-summary,
+  .agenda-weekdays span,
+  .agenda-event-chip span,
+  .agenda-event-chip small,
+  .agenda-more,
+  .agenda-day-row p,
+  .whatsapp-sidebar-header span,
+  .whatsapp-chat-header span,
+  .whatsapp-thread-main small,
+  .whatsapp-thread-meta small,
+  .whatsapp-contact-result small,
+  .whatsapp-empty,
+  .whatsapp-empty-chat,
+  .whatsapp-bubble span,
+  .whatsapp-bubble small,
+  .whatsapp-qr-only-card span,
+  .whatsapp-qr-loading
+) {
+  color: var(--muted) !important;
+}
+
+.dark :where(.primary, .btn.primary, .brand-mark, .toast, .orbit-button, .whatsapp-bubble, .whatsapp-bubble p, .whatsapp-qr-only-card code, .whatsapp-pin code, .whatsapp-qr-card code) {
+  color: #fff;
+}
+
+.dark .whatsapp-bubble,
+.dark .whatsapp-bubble p,
+.dark .whatsapp-message-attachment,
+.dark .whatsapp-message-attachment span,
+.dark .whatsapp-bubble-actions button,
+.dark .whatsapp-edit-form button {
+  color: #0f172a !important;
+}
+
+.dark .whatsapp-bubble-row.inbound .whatsapp-bubble {
+  background: #f4efe9 !important;
+}
+
+.dark .whatsapp-bubble-row:not(.inbound) .whatsapp-bubble {
+  background: #d5f6cf !important;
 }
