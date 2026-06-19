@@ -5,7 +5,6 @@
   --accent: #2563eb;
   --app-surface: #ffffff;
   --app-text: #111827;
-  --ink: var(--app-text);
   --muted: #64748b;
   --line: #d8dee9;
   --soft: #f4f7fb;
@@ -13,35 +12,12 @@
   --success: #16a34a;
   --warning: #ca8a04;
   --shadow: 0 20px 70px rgba(15, 23, 42, 0.12);
-  --input-surface: #ffffff;
-  --panel-surface: #ffffff;
-  --subtle-surface: #f8fafc;
-  --hover-surface: color-mix(in srgb, var(--accent) 12%, #fff);
-  --app-background: linear-gradient(180deg, rgba(248, 251, 255, 0.98), rgba(240, 246, 255, 0.96));
   background: var(--soft);
   color: var(--app-text);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-.dark {
-  color-scheme: dark;
-  --app-surface: #211f1d;
-  --app-text: #feefe1;
-  --ink: var(--app-text);
-  --muted: #b9afa4;
-  --line: #3e3832;
-  --soft: #1c1a18;
-  --input-surface: #2b2825;
-  --panel-surface: #211f1d;
-  --subtle-surface: #27231f;
-  --hover-surface: color-mix(in srgb, var(--accent) 18%, #2b2825);
-  --shadow: 0 20px 70px rgba(0, 0, 0, 0.48);
-  --app-background: linear-gradient(180deg, #1d1b19, #181715);
-  background: var(--soft);
-  color: var(--app-text);
 }
 
 * {
@@ -59,10 +35,6 @@ body,
 body {
   min-height: 100vh;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(244, 247, 251, 0.98));
-}
-
-.dark body {
-  background: var(--app-background);
 }
 
 body:has(.form-modal) {
@@ -117,7 +89,7 @@ select {
   min-height: 44px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--input-surface);
+  background: #fff;
   color: var(--app-text);
   padding: 10px 12px;
   outline: none;
@@ -145,11 +117,7 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr:nth-child(odd) {
-  background: var(--panel-surface);
-}
-
-.dark tbody tr:nth-child(even) {
-  background: color-mix(in srgb, var(--panel-surface) 82%, #000);
+  background: #fff;
 }
 
 th,
@@ -161,7 +129,7 @@ td {
 }
 
 th {
-  color: var(--muted);
+  color: #475569;
   font-size: 0.82rem;
   text-transform: uppercase;
 }
@@ -178,13 +146,6 @@ th {
     radial-gradient(circle at 70% 18%, rgba(37, 99, 235, 0.16), transparent 34%),
     radial-gradient(circle at 10% 84%, rgba(14, 116, 144, 0.13), transparent 32%);
   padding: clamp(24px, 6vw, 84px);
-}
-
-.dark .login-page {
-  background:
-    linear-gradient(120deg, rgba(29, 27, 25, 0.98), rgba(35, 31, 28, 0.94) 48%, rgba(24, 23, 21, 0.98)),
-    radial-gradient(circle at 70% 18%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 34%),
-    radial-gradient(circle at 10% 84%, rgba(254, 239, 225, 0.08), transparent 32%);
 }
 
 .login-copy {
@@ -240,17 +201,6 @@ th {
   line-height: 1.6;
 }
 
-.dark .login-copy p,
-.dark .login-panel label,
-.dark .field,
-.dark .sidebar-footer,
-.dark .side-nav button,
-.dark .side-config-menu summary,
-.dark .side-config-button,
-.dark .side-logout {
-  color: var(--muted);
-}
-
 .login-showcase {
   display: grid;
   align-self: center;
@@ -276,10 +226,6 @@ th {
   line-height: 1.6;
 }
 
-.dark .seo-text {
-  background: color-mix(in srgb, var(--panel-surface) 76%, transparent);
-}
-
 .login-panel,
 .form-panel,
 .detail-panel,
@@ -299,18 +245,9 @@ th {
   backdrop-filter: blur(18px);
 }
 
-.dark .login-panel {
-  background: color-mix(in srgb, var(--panel-surface) 88%, transparent);
-}
-
 .login-panel h2 {
   margin: 0;
   font-size: 1.55rem;
-}
-
-.login-theme-toggle {
-  justify-self: end;
-  width: 154px;
 }
 
 .login-panel label,
@@ -380,7 +317,7 @@ th {
 .app-shell {
   --sidebar-width: 236px;
   min-height: 100vh;
-  background: var(--app-background);
+  background: linear-gradient(180deg, rgba(248, 251, 255, 0.98), rgba(240, 246, 255, 0.96));
 }
 
 .app-shell.sidebar-collapsed {
@@ -397,7 +334,7 @@ th {
   grid-template-rows: auto 1fr auto;
   width: var(--sidebar-width);
   border-right: 1px solid rgba(148, 163, 184, 0.34);
-  background: color-mix(in srgb, var(--panel-surface) 92%, transparent);
+  background: rgba(255, 255, 255, 0.92);
   padding: 14px 12px;
   box-shadow: 12px 0 36px rgba(15, 23, 42, 0.07);
   transition: width 0.22s ease;
@@ -474,7 +411,7 @@ th {
 .side-config-menu summary:hover,
 .side-config-button:hover,
 .side-logout:hover {
-  background: var(--hover-surface);
+  background: color-mix(in srgb, var(--accent) 12%, #fff);
   color: var(--accent);
 }
 
@@ -552,78 +489,9 @@ th {
   width: 190px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--panel-surface);
+  background: #fff;
   padding: 8px;
   box-shadow: var(--shadow);
-}
-
-.theme-toggle {
-  position: relative;
-  display: inline-flex;
-  min-height: 42px;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  width: 100%;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--input-surface);
-  color: var(--muted);
-  padding: 0 12px;
-  font-size: 0.9rem;
-  font-weight: 900;
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.theme-toggle:hover {
-  border-color: color-mix(in srgb, var(--accent) 34%, var(--line));
-  background: var(--hover-surface);
-  color: var(--accent);
-}
-
-.theme-toggle svg {
-  position: relative;
-  z-index: 1;
-  flex: 0 0 auto;
-  transition: transform 0.2s ease;
-}
-
-.theme-toggle:hover svg {
-  transform: rotate(-8deg) scale(1.04);
-}
-
-.theme-toggle span:not(.theme-toggle-glow) {
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.theme-toggle-glow {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), transparent 46%, rgba(245, 158, 11, 0.18));
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.theme-toggle[data-state='dark'] .theme-toggle-glow {
-  opacity: 1;
-}
-
-.sidebar-collapsed .theme-toggle {
-  justify-content: center;
-  padding: 0;
-}
-
-.sidebar-collapsed .theme-toggle span:not(.theme-toggle-glow) {
-  display: none;
 }
 
 .sidebar-collapsed .side-config-button {
@@ -645,7 +513,7 @@ th {
   height: 38px;
   place-items: center;
   border: 1px solid var(--line);
-  background: var(--input-surface);
+  background: #fff;
 }
 
 .view-toolbar,
@@ -4659,415 +4527,4 @@ th {
   .field {
     grid-column: auto;
   }
-}
-
-.dark .login-panel,
-.dark .form-panel,
-.dark .detail-panel,
-.dark .empty-panel,
-.dark .report-panel,
-.dark .dashboard-view,
-.dark .dashboard-card,
-.dark .metric-card,
-.dark .table-card,
-.dark .summary-card,
-.dark .category-card,
-.dark .category-item,
-.dark .form-modal-card,
-.dark .kanban-column,
-.dark .kanban-card,
-.dark .agenda-month-view,
-.dark .agenda-day-cell,
-.dark .agenda-list-card,
-.dark .whatsapp-crm,
-.dark .whatsapp-sidebar,
-.dark .whatsapp-chat,
-.dark .whatsapp-message-card,
-.dark .client-portal-shell,
-.dark .client-portal-hero,
-.dark .client-portal-card,
-.dark .user-table-row,
-.dark .user-create-card,
-.dark .search-box {
-  background: var(--panel-surface) !important;
-  color: var(--app-text) !important;
-}
-
-.dark .app-shell,
-.dark .app-content,
-.dark .client-portal-shell {
-  background: var(--app-background) !important;
-  color: var(--app-text) !important;
-}
-
-.dark .dashboard-view::before {
-  background:
-    linear-gradient(120deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent 34%),
-    linear-gradient(300deg, rgba(254, 239, 225, 0.05), transparent 36%) !important;
-}
-
-.dark .dashboard-hero h1,
-.dark .dashboard-title h1,
-.dark .view-toolbar h1,
-.dark .metric-card strong,
-.dark .category-card h3,
-.dark .category-item strong,
-.dark .panel-title h2,
-.dark .detail-panel h2,
-.dark .report-panel h2,
-.dark .kanban-column h3,
-.dark .user-table-summary strong,
-.dark .whatsapp-chat-header strong,
-.dark .client-portal-hero h1 {
-  color: var(--app-text) !important;
-}
-
-.dark .dashboard-master-name,
-.dark .dashboard-guidance,
-.dark .orbit-arrow,
-.dark .orbit-center,
-.dark .suggestion-strip,
-.dark .suggestion-strip span,
-.dark .tab-row span,
-.dark .month-picker,
-.dark .agenda-day-row,
-.dark .finance-service-line,
-.dark .compact-list span,
-.dark .compact-link,
-.dark .client-contract-card,
-.dark .service-contract-card,
-.dark .permission-row,
-.dark .user-table-summary,
-.dark .login-image-preview {
-  background: var(--subtle-surface) !important;
-  color: var(--app-text) !important;
-}
-
-.dark .search-box,
-.dark .compact-filter,
-.dark .client-filter,
-.dark .agenda-view-switch,
-.dark .finance-filter-row,
-.dark .service-search-row,
-.dark .user-filter-row,
-.dark .checkbox-grid,
-.dark .permission-block,
-.dark .side-config-actions {
-  background: var(--subtle-surface) !important;
-  color: var(--app-text) !important;
-}
-
-.dark .btn:not(.primary),
-.dark .secondary-btn,
-.dark .ghost-btn,
-.dark .file-link,
-.dark .agenda-nav-controls button,
-.dark .agenda-view-switch button {
-  background: var(--input-surface) !important;
-  color: var(--app-text) !important;
-}
-
-.dark .btn:not(.primary):hover,
-.dark .secondary-btn:hover,
-.dark .ghost-btn:hover,
-.dark .file-link:hover,
-.dark .agenda-nav-controls button:hover,
-.dark .agenda-view-switch button:hover {
-  background: var(--hover-surface) !important;
-  color: var(--accent) !important;
-}
-
-.dark .login-copy p,
-.dark .dashboard-guidance,
-.dark .muted,
-.dark .small-muted,
-.dark .metric-card span,
-.dark .summary-card span,
-.dark .category-card small,
-.dark .category-item small,
-.dark .table-meta,
-.dark .panel-subtitle,
-.dark .empty-panel p,
-.dark .client-portal-header span,
-.dark .whatsapp-message-meta,
-.dark .agenda-day-cell small,
-.dark .kanban-card small,
-.dark th {
-  color: var(--muted) !important;
-}
-
-.dark input,
-.dark textarea,
-.dark select {
-  background: var(--input-surface) !important;
-  color: var(--app-text) !important;
-  border-color: var(--line) !important;
-}
-
-.dark tbody tr,
-.dark tbody tr:nth-child(odd),
-.dark tbody tr:nth-child(even) {
-  background: var(--panel-surface) !important;
-  color: var(--app-text) !important;
-}
-
-.dark th,
-.dark td {
-  border-color: var(--line) !important;
-}
-
-.dark .form-modal-backdrop {
-  background: rgba(0, 0, 0, 0.62);
-}
-
-.dark .form-modal-card {
-  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.62);
-}
-
-.dark .status-pill,
-.dark .tag,
-.dark .mini-badge,
-.dark .client-tag,
-.dark .agenda-event {
-  filter: saturate(0.92) brightness(0.96);
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-.dark::view-transition-old(root),
-.dark::view-transition-new(root) {
-  mix-blend-mode: normal;
-}
-
-.dark :where(
-  .app-content,
-  .dashboard-view,
-  .form-panel,
-  .detail-panel,
-  .empty-panel,
-  .report-panel,
-  .metric-card,
-  .master-company-section,
-  .finance-chart-panel,
-  .client-services-field,
-  .client-service-option,
-  .paid-summary,
-  .table-wrap,
-  .clean-table,
-  .agenda-shell,
-  .agenda-month-view,
-  .agenda-week-column,
-  .agenda-day-row,
-  .whatsapp-crm,
-  .whatsapp-qr-only-card,
-  .whatsapp-qr-card,
-  .whatsapp-empty-chat,
-  .user-table-row,
-  .user-table-head,
-  .kanban-column,
-  .kanban-card,
-  .activity-card,
-  .client-portal-card,
-  .client-portal-hero
-) :where(h1, h2, h3, h4, h5, h6, p, label, legend, strong, b, span, small, td, th, li, summary) {
-  color: var(--app-text);
-}
-
-.dark :where(
-  .form-hint,
-  .date-row,
-  .finance-chart-legend,
-  .compact-list span,
-  .compact-link,
-  .clean-table td,
-  .clean-table small,
-  .dashboard-hero p,
-  .user-create-card p,
-  .user-table-summary span:not(.status-pill),
-  .client-services-field small,
-  .client-contract-grid label,
-  .paid-summary,
-  .agenda-weekdays span,
-  .agenda-event-chip span,
-  .agenda-event-chip small,
-  .agenda-more,
-  .agenda-day-row p,
-  .whatsapp-sidebar-header span,
-  .whatsapp-chat-header span,
-  .whatsapp-thread-main small,
-  .whatsapp-thread-meta small,
-  .whatsapp-contact-result small,
-  .whatsapp-empty,
-  .whatsapp-empty-chat,
-  .whatsapp-bubble span,
-  .whatsapp-bubble small,
-  .whatsapp-qr-only-card span,
-  .whatsapp-qr-loading
-) {
-  color: var(--muted) !important;
-}
-
-.dark :where(.btn.primary, .toast, .orbit-button, .whatsapp-bubble, .whatsapp-bubble p, .whatsapp-qr-only-card code, .whatsapp-pin code, .whatsapp-qr-card code) {
-  color: #fff;
-}
-
-.dark .brand-mark {
-  background: color-mix(in srgb, var(--accent) 24%, var(--panel-surface)) !important;
-  color: var(--app-text) !important;
-}
-
-.dark .whatsapp-bubble,
-.dark .whatsapp-bubble p,
-.dark .whatsapp-message-attachment,
-.dark .whatsapp-message-attachment span,
-.dark .whatsapp-bubble-actions button,
-.dark .whatsapp-edit-form button {
-  color: #0f172a !important;
-}
-
-.dark .whatsapp-bubble-row.inbound .whatsapp-bubble {
-  background: #f4efe9 !important;
-}
-
-.dark .whatsapp-bubble-row:not(.inbound) .whatsapp-bubble {
-  background: #d5f6cf !important;
-}
-
-.dark #root,
-.dark .app-shell,
-.dark .app-content {
-  background: var(--app-background) !important;
-  color: var(--app-text) !important;
-}
-
-.dark .app-content :where(
-  [class*='panel'],
-  [class*='card'],
-  [class*='table'],
-  [class*='shell'],
-  [class*='workspace'],
-  [class*='filter'],
-  [class*='search'],
-  [class*='modal'],
-  [class*='wrap'],
-  [class*='composer'],
-  [class*='sidebar'],
-  [class*='header'],
-  [class*='body'],
-  [class*='option'],
-  [class*='section'],
-  [class*='create'],
-  [class*='services-field'],
-  [class*='summary'],
-  [class*='preview']
-) {
-  background: var(--panel-surface) !important;
-  color: var(--app-text) !important;
-  border-color: var(--line) !important;
-}
-
-.dark .app-content :where(
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  label,
-  legend,
-  strong,
-  b,
-  span,
-  small,
-  td,
-  th,
-  li,
-  summary,
-  a,
-  button
-) {
-  color: inherit;
-}
-
-.dark .app-content :where(
-  input,
-  textarea,
-  select,
-  .icon-btn,
-  .secondary-btn,
-  .ghost-btn,
-  .table-actions button,
-  .card-actions button,
-  .panel-title button,
-  .agenda-share-actions a,
-  .agenda-share-actions button,
-  .whatsapp-contact-result button,
-  .whatsapp-bubble-actions button,
-  .whatsapp-edit-form button
-) {
-  background: var(--input-surface) !important;
-  color: var(--app-text) !important;
-  border-color: var(--line) !important;
-}
-
-.dark .app-content :where(
-  .form-hint,
-  .date-row,
-  .finance-chart-legend,
-  .compact-list span,
-  .compact-link,
-  .clean-table td,
-  .clean-table small,
-  .dashboard-hero p,
-  .user-create-card p,
-  .client-services-field small,
-  .client-contract-grid label,
-  .agenda-weekdays span,
-  .agenda-event-chip span,
-  .agenda-event-chip small,
-  .agenda-more,
-  .agenda-day-row p,
-  .whatsapp-sidebar-header span,
-  .whatsapp-chat-header span,
-  .whatsapp-thread-main small,
-  .whatsapp-thread-meta small,
-  .whatsapp-contact-result small,
-  .whatsapp-empty,
-  .whatsapp-empty-chat,
-  .whatsapp-bubble span,
-  .whatsapp-bubble small,
-  .whatsapp-qr-only-card span,
-  .whatsapp-qr-loading
-) {
-  color: var(--muted) !important;
-}
-
-.dark .app-content :where(
-  .btn.primary,
-  .orbit-button,
-  .orbit-button *,
-  .agenda-day-cell.today .agenda-day-number,
-  .whatsapp-qr-only-card code,
-  .whatsapp-pin code,
-  .whatsapp-qr-card code
-) {
-  color: #fff !important;
-}
-
-.dark .app-content :where(.status-pill, .soft-pill, .tag, .mini-badge, .client-tag) {
-  background: color-mix(in srgb, currentColor 12%, var(--panel-surface)) !important;
-}
-
-.dark .app-content .whatsapp-bubble,
-.dark .app-content .whatsapp-bubble *,
-.dark .app-content .whatsapp-message-attachment,
-.dark .app-content .whatsapp-message-attachment *,
-.dark .app-content .agenda-event-chip,
-.dark .app-content .agenda-event-chip strong {
-  color: #0f172a !important;
 }

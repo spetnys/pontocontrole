@@ -20,7 +20,6 @@ import {
   Mail,
   Menu,
   MessageCircle,
-  Moon,
   Paperclip,
   Plus,
   QrCode,
@@ -30,7 +29,6 @@ import {
   Send,
   Settings,
   ShieldCheck,
-  Sun,
   Trash2,
   UserCog,
   Users,
@@ -39,7 +37,6 @@ import {
 } from 'lucide-react';
 import QRCode from 'qrcode';
 import React, { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { flushSync } from 'react-dom';
 
 type PermissionSet = {
   modules: string[];
@@ -252,7 +249,6 @@ type ViewId = 'dashboard' | 'clients' | 'services' | 'resources' | 'activities' 
 type PeriodFilter = 'today' | 'week' | 'month' | 'six_months' | 'year' | 'all';
 type FinancePeriodFilter = 'month' | 'quarter' | 'semester' | 'year' | 'all';
 type AgendaViewMode = 'month' | 'week' | 'day';
-type ColorScheme = 'light' | 'dark';
 
 type WhatsappConnector = {
   mode: 'evolution' | 'wa_me';
@@ -1200,35 +1196,12 @@ function readFile(file: File): Promise<FinanceFile> {
   });
 }
 
-function getInitialColorScheme(): ColorScheme {
-  if (typeof window === 'undefined') return 'light';
-  return window.localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
-}
-
-function applyTheme(theme?: ThemeSettings | null, colorScheme: ColorScheme = getInitialColorScheme()) {
+function applyTheme(theme?: ThemeSettings | null) {
   const selected = theme || palettes[0];
   document.documentElement.style.setProperty('--accent', selected.accent);
-  document.documentElement.style.setProperty('--app-surface', colorScheme === 'dark' ? '#211f1d' : selected.surface);
-  document.documentElement.style.setProperty('--app-text', colorScheme === 'dark' ? '#feefe1' : selected.text);
+  document.documentElement.style.setProperty('--app-surface', selected.surface);
+  document.documentElement.style.setProperty('--app-text', selected.text);
   document.documentElement.dataset.palette = selected.palette;
-  document.documentElement.classList.toggle('dark', colorScheme === 'dark');
-}
-
-function AnimatedThemeToggle({ isDark, onToggle }: { isDark: boolean; onToggle: () => void }) {
-  return (
-    <button
-      className="theme-toggle"
-      type="button"
-      onClick={onToggle}
-      data-state={isDark ? 'dark' : 'light'}
-      aria-label={isDark ? 'Ativar tema claro' : 'Ativar tema escuro'}
-      title={isDark ? 'Tema claro' : 'Tema escuro'}
-    >
-      <span aria-hidden className="theme-toggle-glow" />
-      {isDark ? <Sun size={17} aria-hidden /> : <Moon size={17} aria-hidden />}
-      <span>{isDark ? 'Tema claro' : 'Tema escuro'}</span>
-    </button>
-  );
 }
 
 function App() {
@@ -1238,7 +1211,6 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [authChecking, setAuthChecking] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(() => (typeof window === 'undefined' ? true : window.innerWidth > 760));
-  const [colorScheme, setColorScheme] = useState<ColorScheme>(() => getInitialColorScheme());
   const [notice, setNotice] = useDebouncedNotice();
   const [publicSettings, setPublicSettings] = useState<PublicSettings>({ loginImageUrl: '' });
   const [loginImageSaving, setLoginImageSaving] = useState(false);
@@ -1316,47 +1288,8 @@ function App() {
   const currentTheme = data?.user.theme || palettes.find((palette) => palette.palette === 'clean') || palettes[0];
 
   useEffect(() => {
-    applyTheme(currentTheme, colorScheme);
-    window.localStorage.setItem('theme', colorScheme);
-  }, [currentTheme, colorScheme]);
-
-  const toggleColorScheme = useCallback(async () => {
-    const nextScheme: ColorScheme = colorScheme === 'dark' ? 'light' : 'dark';
-    const runUpdate = () => {
-      flushSync(() => {
-        setColorScheme(nextScheme);
-        applyTheme(currentTheme, nextScheme);
-        window.localStorage.setItem('theme', nextScheme);
-      });
-    };
-
-    if (!document.startViewTransition) {
-      runUpdate();
-      return;
-    }
-
-    const transition = document.startViewTransition(runUpdate);
-    await transition.ready;
-
-    const button = document.querySelector<HTMLButtonElement>('.theme-toggle');
-    if (!button) return;
-
-    const { top, left, width, height } = button.getBoundingClientRect();
-    const x = left + width / 2;
-    const y = top + height / 2;
-    const maxRadius = Math.hypot(Math.max(left, window.innerWidth - left), Math.max(top, window.innerHeight - top));
-
-    document.documentElement.animate(
-      {
-        clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${maxRadius}px at ${x}px ${y}px)`],
-      },
-      {
-        duration: 400,
-        easing: 'ease-in-out',
-        pseudoElement: '::view-transition-new(root)',
-      },
-    );
-  }, [colorScheme, currentTheme]);
+    applyTheme(currentTheme);
+  }, [currentTheme]);
 
   useEffect(() => {
     document.querySelectorAll<HTMLButtonElement>('button').forEach((button) => {
@@ -2587,9 +2520,6 @@ function App() {
                   : submitLogin
           }
         >
-          <div className="login-theme-toggle">
-            <AnimatedThemeToggle isDark={colorScheme === 'dark'} onToggle={toggleColorScheme} />
-          </div>
           <KeyRound size={28} />
           <h2>
             {passwordResetMode === 'request'
@@ -2777,7 +2707,6 @@ function App() {
         </nav>
 
         <div className="sidebar-footer">
-          <AnimatedThemeToggle isDark={colorScheme === 'dark'} onToggle={toggleColorScheme} />
           {visibleSettingsItems.length > 0 && (
             <details className="side-config-menu">
               <summary aria-label="Configurações" title="Configurações" onClick={() => canModule('settings') && openView('settings')}>
