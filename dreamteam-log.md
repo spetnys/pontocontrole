@@ -24,9 +24,13 @@ pendencias.
   `Serviços alocados` nos campos de busca.
 - Como desfazer: reverter `wine/src/App.tsx` e `wine/src/styles.css` deste
   commit.
-- Testes executados: `npm run build`.
-- Resultados: build Vite passou.
-- Pendencias: publicar em producao e validar health checks.
+- Testes executados: `npm run build`; `sudo ./scripts/deploy-docker-run.sh`;
+  `curl -fsS https://adegaweb.com.br/api/health`;
+  `curl -fsS https://www.adegaweb.com.br/api/health`; `sudo -n docker ps`.
+- Resultados: build Vite passou; deploy em producao concluido; os dois
+  dominios retornaram `{"ok":true,"app":"ponto-controle","store":"postgres"}`;
+  container `ponto-controle-app` ficou healthy.
+- Pendencias: nenhuma.
 
 - Pedido do usuario: corrigir publicacao no GitHub porque o repositorio remoto
   mostrava apenas `Initial commit` em vez dos commits retroativos.
