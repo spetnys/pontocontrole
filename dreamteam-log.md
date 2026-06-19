@@ -24,9 +24,13 @@ pendencias.
 - O que mudou: Agenda agora pode ser filtrada por empresa master, e novos
   eventos usam a master selecionada.
 - Como desfazer: reverter `wine/src/App.tsx` deste commit.
-- Testes executados: `npm run build`.
-- Resultados: build Vite passou.
-- Pendencias: publicar em producao e validar health checks.
+- Testes executados: `npm run build`; `sudo ./scripts/deploy-docker-run.sh`;
+  `curl -fsS https://adegaweb.com.br/api/health`;
+  `curl -fsS https://www.adegaweb.com.br/api/health`; `sudo -n docker ps`.
+- Resultados: build Vite passou; deploy em producao concluido; os dois
+  dominios retornaram `{"ok":true,"app":"ponto-controle","store":"postgres"}`;
+  container `ponto-controle-app` ficou healthy.
+- Pendencias: nenhuma.
 
 - Pedido do usuario: em Serviços, permitir procurar/filtrar por empresa master.
 - Data/hora: 2026-06-19 18:51 UTC.
