@@ -5,6 +5,36 @@ pendencias.
 
 ## 2026-06-18
 
+- Pedido do usuario: corrigir publicacao no GitHub porque o repositorio remoto
+  mostrava apenas `Initial commit` em vez dos commits retroativos.
+- Data/hora: 2026-06-19 00:00 UTC.
+- Contexto: o historico retroativo havia sido criado localmente, mas ainda nao
+  estava publicado no remoto `spetnys/pontocontrole`; o GitHub tinha uma `main`
+  propria com apenas um commit inicial.
+- Arquivos analisados: `dreamteam.md`, `.git`, historico local `main`,
+  `origin/main`.
+- Decisoes: configurar `origin` como
+  `git@github.com:spetnys/pontocontrole.git`; buscar a `main` remota; publicar
+  a `main` local usando `git push --force-with-lease -u origin main` para
+  substituir com seguranca o commit inicial remoto pelo historico reconstruido.
+- Motivos: o pedido explicito era publicar todos os commits retroativos no
+  GitHub; `--force-with-lease` evita sobrescrever alteracao remota inesperada.
+- Arquivos alterados: nenhum arquivo de codigo; refs/configuracao Git local e
+  branch remota `main`.
+- O que mudou: `origin/main` passou de `f9aefab Initial commit` para
+  `14effef docs: registrar historico Git reconstruido`, com 28 commits
+  publicados.
+- Como desfazer: restaurar a `main` remota para `f9aefab` com push explicito,
+  se for necessario voltar ao commit inicial do GitHub.
+- Testes executados: `git fetch origin main`; `git rev-list --count main`;
+  `git rev-list --count origin/main`; `git push --force-with-lease -u origin
+  main`; `git ls-remote origin refs/heads/main`; `git log origin/main`;
+  `git status --short --branch`.
+- Resultados: push aceito; `origin/main` aponta para
+  `14effefa3e4d4fb21223dbd612ebdac341495e91`; remoto validado com 28 commits;
+  branch local rastreia `origin/main`.
+- Pendencias: nenhuma.
+
 - Pedido do usuario: criar historico Git retroativo do projeto Ponto Controle
   para uso no GitHub.
 - Data/hora: 2026-06-18 23:58 UTC.

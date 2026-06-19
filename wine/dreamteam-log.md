@@ -5,6 +5,29 @@ pendencias.
 
 ## 2026-06-18
 
+- Pedido do usuario: corrigir publicacao no GitHub para que a branch `main`
+  mostre os commits retroativos em vez de apenas `Initial commit`.
+- Data/hora: 2026-06-19 00:00 UTC.
+- Contexto: o historico local ja existia, mas o remoto
+  `spetnys/pontocontrole` ainda apontava para o commit inicial criado no
+  GitHub.
+- Arquivos analisados: `../dreamteam.md`, `../.git`, historico local e
+  `origin/main`.
+- Decisoes: configurar remoto SSH do GitHub e publicar a `main` local com
+  `--force-with-lease`.
+- Arquivos alterados: nenhum arquivo da aplicacao; refs/configuracao Git local
+  e branch remota.
+- O que mudou: `origin/main` foi substituida pelo historico reconstruido com 28
+  commits.
+- Como desfazer: voltar a `main` remota para `f9aefab`, se necessario.
+- Testes executados: `git fetch origin main`; `git push --force-with-lease -u
+  origin main`; `git ls-remote origin refs/heads/main`; `git rev-list --count
+  origin/main`; `git log origin/main`; `git status --short --branch`.
+- Resultados: remoto aponta para
+  `14effefa3e4d4fb21223dbd612ebdac341495e91`; 28 commits confirmados no
+  remoto.
+- Pendencias: nenhuma.
+
 - Pedido do usuario: criar historico Git retroativo do projeto Ponto Controle
   para uso no GitHub.
 - Data/hora: 2026-06-18 23:58 UTC.
