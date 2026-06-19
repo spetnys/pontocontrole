@@ -4664,6 +4664,8 @@ th {
 .dark .detail-panel,
 .dark .empty-panel,
 .dark .report-panel,
+.dark .dashboard-view,
+.dark .dashboard-card,
 .dark .metric-card,
 .dark .table-card,
 .dark .summary-card,
@@ -4685,8 +4687,58 @@ th {
 .dark .user-table-row,
 .dark .user-create-card,
 .dark .search-box {
-  background-color: var(--panel-surface);
-  color: var(--app-text);
+  background: var(--panel-surface) !important;
+  color: var(--app-text) !important;
+}
+
+.dark .app-shell,
+.dark .app-content,
+.dark .client-portal-shell {
+  background: var(--app-background) !important;
+  color: var(--app-text) !important;
+}
+
+.dark .dashboard-view::before {
+  background:
+    linear-gradient(120deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent 34%),
+    linear-gradient(300deg, rgba(254, 239, 225, 0.05), transparent 36%) !important;
+}
+
+.dark .dashboard-hero h1,
+.dark .dashboard-title h1,
+.dark .view-toolbar h1,
+.dark .metric-card strong,
+.dark .category-card h3,
+.dark .category-item strong,
+.dark .panel-title h2,
+.dark .detail-panel h2,
+.dark .report-panel h2,
+.dark .kanban-column h3,
+.dark .user-table-summary strong,
+.dark .whatsapp-chat-header strong,
+.dark .client-portal-hero h1 {
+  color: var(--app-text) !important;
+}
+
+.dark .dashboard-master-name,
+.dark .dashboard-guidance,
+.dark .orbit-arrow,
+.dark .orbit-center,
+.dark .suggestion-strip,
+.dark .suggestion-strip span,
+.dark .tab-row span,
+.dark .month-picker,
+.dark .agenda-day-row,
+.dark .finance-service-line,
+.dark .compact-list span,
+.dark .compact-link,
+.dark .client-contract-card,
+.dark .service-contract-card,
+.dark .permission-row,
+.dark .user-table-summary,
+.dark .login-image-preview {
+  background: var(--subtle-surface) !important;
+  color: var(--app-text) !important;
 }
 
 .dark .search-box,
@@ -4699,7 +4751,8 @@ th {
 .dark .checkbox-grid,
 .dark .permission-block,
 .dark .side-config-actions {
-  background-color: var(--subtle-surface);
+  background: var(--subtle-surface) !important;
+  color: var(--app-text) !important;
 }
 
 .dark .btn:not(.primary),
@@ -4708,8 +4761,8 @@ th {
 .dark .file-link,
 .dark .agenda-nav-controls button,
 .dark .agenda-view-switch button {
-  background-color: var(--input-surface);
-  color: var(--app-text);
+  background: var(--input-surface) !important;
+  color: var(--app-text) !important;
 }
 
 .dark .btn:not(.primary):hover,
@@ -4718,8 +4771,8 @@ th {
 .dark .file-link:hover,
 .dark .agenda-nav-controls button:hover,
 .dark .agenda-view-switch button:hover {
-  background-color: var(--hover-surface);
-  color: var(--accent);
+  background: var(--hover-surface) !important;
+  color: var(--accent) !important;
 }
 
 .dark .login-copy p,
@@ -4738,7 +4791,27 @@ th {
 .dark .agenda-day-cell small,
 .dark .kanban-card small,
 .dark th {
-  color: var(--muted);
+  color: var(--muted) !important;
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  background: var(--input-surface) !important;
+  color: var(--app-text) !important;
+  border-color: var(--line) !important;
+}
+
+.dark tbody tr,
+.dark tbody tr:nth-child(odd),
+.dark tbody tr:nth-child(even) {
+  background: var(--panel-surface) !important;
+  color: var(--app-text) !important;
+}
+
+.dark th,
+.dark td {
+  border-color: var(--line) !important;
 }
 
 .dark .form-modal-backdrop {
