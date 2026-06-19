@@ -5,6 +5,25 @@ pendencias.
 
 ## 2026-06-18
 
+- Pedido do usuario: Agenda tambem deve permitir agendar por empresa master,
+  mantendo agendas separadas.
+- Data/hora: 2026-06-19 19:24 UTC.
+- Contexto: a tela Agenda precisava seguir o recorte multiempresa ja aplicado
+  em Equipe, Serviços e Atividades.
+- Arquivos analisados: `../dreamteam.md`, `src/App.tsx`, `server/index.js`,
+  `../dreamteam-log.md`, `dreamteam-log.md`.
+- Decisoes: incluir filtro de empresa master; filtrar eventos, clientes e
+  pessoas pela master selecionada; criar evento usando a master do filtro;
+  permitir trocar a master no formulario quando o usuario tem mais de uma
+  master acessivel.
+- Arquivos alterados: `src/App.tsx`, `../dreamteam-log.md`,
+  `dreamteam-log.md`.
+- O que mudou: Agenda passou a operar com agendas separadas por empresa master.
+- Como desfazer: reverter `src/App.tsx`.
+- Testes executados: `npm run build`.
+- Resultados: build Vite passou.
+- Pendencias: publicar em producao e validar health checks.
+
 - Pedido do usuario: em Serviços, permitir procurar/filtrar por empresa master.
 - Data/hora: 2026-06-19 18:51 UTC.
 - Contexto: a tela de Serviços precisava do mesmo recorte multiempresa aplicado

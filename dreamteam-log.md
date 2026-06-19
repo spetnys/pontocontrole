@@ -5,6 +5,29 @@ pendencias.
 
 ## 2026-06-18
 
+- Pedido do usuario: Agenda tambem deve permitir agendar por empresa master,
+  mantendo agendas separadas.
+- Data/hora: 2026-06-19 19:24 UTC.
+- Contexto: o sistema ja separava clientes, equipe, servicos e atividades por
+  empresa master; a Agenda tinha `masterCompanyId` no backend, mas a interface
+  ainda nao tinha filtro/seleção explícita por master.
+- Arquivos analisados: `dreamteam.md`, `wine/src/App.tsx`,
+  `wine/server/index.js`, estado Git.
+- Decisoes: adicionar filtro `Empresa master` na Agenda quando houver mais de
+  uma master acessivel; filtrar eventos, clientes e pessoas pela master
+  selecionada; criar novo agendamento na master selecionada; mostrar selecao de
+  master no formulario para qualquer usuario multiempresa.
+- Motivos: manter agendas separadas por empresa master sem ampliar acesso a
+  dados, usando somente dados ja autorizados pelo backend.
+- Arquivos alterados: `wine/src/App.tsx`, `dreamteam-log.md`,
+  `wine/dreamteam-log.md`.
+- O que mudou: Agenda agora pode ser filtrada por empresa master, e novos
+  eventos usam a master selecionada.
+- Como desfazer: reverter `wine/src/App.tsx` deste commit.
+- Testes executados: `npm run build`.
+- Resultados: build Vite passou.
+- Pendencias: publicar em producao e validar health checks.
+
 - Pedido do usuario: em Serviços, permitir procurar/filtrar por empresa master.
 - Data/hora: 2026-06-19 18:51 UTC.
 - Contexto: depois de adicionar filtro por empresa master em Equipe, a tela de

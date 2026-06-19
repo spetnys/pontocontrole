@@ -1240,6 +1240,7 @@ function App() {
   const [financeStatusFilter, setFinanceStatusFilter] = useState('');
   const [agendaViewMode, setAgendaViewMode] = useState<AgendaViewMode>('month');
   const [agendaCursor, setAgendaCursor] = useState(() => new Date());
+  const [agendaMasterCompanyFilter, setAgendaMasterCompanyFilter] = useState('');
   const [agendaClientFilter, setAgendaClientFilter] = useState('');
   const [agendaResourceFilter, setAgendaResourceFilter] = useState('');
   const [whatsappPayload, setWhatsappPayload] = useState<WhatsappPayload | null>(null);
@@ -1873,6 +1874,7 @@ function App() {
       setFinanceStatusFilter('');
     }
     if (nextView === 'agenda') {
+      setAgendaMasterCompanyFilter('');
       setAgendaClientFilter('');
       setAgendaResourceFilter('');
     }
@@ -4851,6 +4853,13 @@ function App() {
   }
 
   function renderAgenda() {
+    const agendaMasterCompanies = accessibleMasterCompanies();
+    const agendaClients = agendaMasterCompanyFilter
+      ? data.clients.filter((client) => client.masterCompanyId === agendaMasterCompanyFilter)
+      : data.clients;
+    const agendaResources = agendaMasterCompanyFilter
+      ? data.resources.filter((resource) => resource.masterCompanyId === agendaMasterCompanyFilter)
+      : data.resources;
     const agendaDate = startOfDay(agendaCursor);
     const monthDays = calendarMonthDays(agendaDate);
     const weekDays = Array.from({ length: 7 }, (_, index) => addDays(startOfWeek(agendaDate), index));
@@ -4936,9 +4945,10 @@ function App() {
 
     const visibleAgendaEvents = data.agendaEvents
       .filter((event) => {
+        const matchesMasterCompany = !agendaMasterCompanyFilter || event.masterCompanyId === agendaMasterCompanyFilter;
         const matchesClient = !agendaClientFilter || event.clientId === agendaClientFilter;
         const matchesResource = !agendaResourceFilter || event.resourceIds.includes(agendaResourceFilter);
-        return matchesClient && matchesResource;
+        return matchesMasterCompany && matchesClient && matchesResource;
       })
       .flatMap(agendaEventOccurrences)
       .sort((first, second) => (
@@ -4948,7 +4958,10 @@ function App() {
       ));
     const todayKey = dateKey(new Date());
     const agendaActivityOptions = agendaForm
-      ? data.activities.filter((activity) => !agendaForm.clientId || activity.clientId === agendaForm.clientId)
+      ? data.activities.filter((activity) => (
+          (!agendaForm.masterCompanyId || activity.masterCompanyId === agendaForm.masterCompanyId) &&
+          (!agendaForm.clientId || activity.clientId === agendaForm.clientId)
+        ))
       : [];
     const agendaFormClient = agendaForm ? data.clients.find((client) => client.id === agendaForm.clientId) : null;
 
@@ -4956,7 +4969,7 @@ function App() {
       const selectedDate = dateKey(day);
       setAgendaForm({
         ...blankAgendaEvent,
-        masterCompanyId: defaultMasterCompanyId(),
+        masterCompanyId: agendaMasterCompanyFilter || agendaMasterCompanies[0]?.id || defaultMasterCompanyId(),
         startDate: selectedDate,
         endDate: selectedDate,
       });
@@ -5205,11 +5218,29 @@ function App() {
           </header>
 
           <div className="agenda-filter-row">
+            {agendaMasterCompanies.length > 1 && (
+              <label className="compact-filter">
+                <span>Empresa master</span>
+                <select
+                  value={agendaMasterCompanyFilter}
+                  onChange={(event) => {
+                    setAgendaMasterCompanyFilter(event.target.value);
+                    setAgendaClientFilter('');
+                    setAgendaResourceFilter('');
+                  }}
+                >
+                  <option value="">Todas as empresas master</option>
+                  {agendaMasterCompanies.map((company) => (
+                    <option key={company.id} value={company.id}>{company.name}</option>
+                  ))}
+                </select>
+              </label>
+            )}
             <label className="compact-filter">
               <span>Cliente</span>
               <select value={agendaClientFilter} onChange={(event) => setAgendaClientFilter(event.target.value)}>
                 <option value="">Todos os clientes</option>
-                {data.clients.map((client) => (
+                {agendaClients.map((client) => (
                   <option key={client.id} value={client.id}>{client.name}</option>
                 ))}
               </select>
@@ -5218,7 +5249,7 @@ function App() {
               <span>Pessoa</span>
               <select value={agendaResourceFilter} onChange={(event) => setAgendaResourceFilter(event.target.value)}>
                 <option value="">Toda a equipe</option>
-                {data.resources.map((resource) => (
+                {agendaResources.map((resource) => (
                   <option key={resource.id} value={resource.id}>{resource.name}</option>
                 ))}
               </select>
@@ -5325,13 +5356,13 @@ function App() {
           <FormWindow onSubmit={saveAgendaEvent}>
             <PanelTitle icon={CalendarDays} title={agendaForm.id ? 'Editar evento' : 'Novo evento'} onClose={() => setAgendaForm(null)} />
             <div className="form-grid">
-              {isPlatformAdminUser() && (
+              {agendaMasterCompanies.length > 1 && (
                 <Field label="Empresa master">
                   <select
-                    value={agendaForm.masterCompanyId || defaultMasterCompanyId()}
+                    value={agendaForm.masterCompanyId || agendaMasterCompanyFilter || agendaMasterCompanies[0]?.id || defaultMasterCompanyId()}
                     onChange={(event) => setAgendaForm({ ...agendaForm, masterCompanyId: event.target.value, clientId: '', clientServiceId: '', serviceId: '', activityId: '', resourceIds: [] })}
                   >
-                    {data.masterCompanies.map((company) => (
+                    {agendaMasterCompanies.map((company) => (
                       <option key={company.id} value={company.id}>{company.name}</option>
                     ))}
                   </select>
