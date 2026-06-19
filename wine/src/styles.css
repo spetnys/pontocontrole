@@ -12,12 +12,34 @@
   --success: #16a34a;
   --warning: #ca8a04;
   --shadow: 0 20px 70px rgba(15, 23, 42, 0.12);
+  --input-surface: #ffffff;
+  --panel-surface: #ffffff;
+  --subtle-surface: #f8fafc;
+  --hover-surface: color-mix(in srgb, var(--accent) 12%, #fff);
+  --app-background: linear-gradient(180deg, rgba(248, 251, 255, 0.98), rgba(240, 246, 255, 0.96));
   background: var(--soft);
   color: var(--app-text);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.dark {
+  color-scheme: dark;
+  --app-surface: #211f1d;
+  --app-text: #feefe1;
+  --muted: #b9afa4;
+  --line: #3e3832;
+  --soft: #1c1a18;
+  --input-surface: #2b2825;
+  --panel-surface: #211f1d;
+  --subtle-surface: #27231f;
+  --hover-surface: color-mix(in srgb, var(--accent) 18%, #2b2825);
+  --shadow: 0 20px 70px rgba(0, 0, 0, 0.48);
+  --app-background: linear-gradient(180deg, #1d1b19, #181715);
+  background: var(--soft);
+  color: var(--app-text);
 }
 
 * {
@@ -35,6 +57,10 @@ body,
 body {
   min-height: 100vh;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(244, 247, 251, 0.98));
+}
+
+.dark body {
+  background: var(--app-background);
 }
 
 body:has(.form-modal) {
@@ -89,7 +115,7 @@ select {
   min-height: 44px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #fff;
+  background: var(--input-surface);
   color: var(--app-text);
   padding: 10px 12px;
   outline: none;
@@ -117,7 +143,11 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr:nth-child(odd) {
-  background: #fff;
+  background: var(--panel-surface);
+}
+
+.dark tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--panel-surface) 82%, #000);
 }
 
 th,
@@ -129,7 +159,7 @@ td {
 }
 
 th {
-  color: #475569;
+  color: var(--muted);
   font-size: 0.82rem;
   text-transform: uppercase;
 }
@@ -146,6 +176,13 @@ th {
     radial-gradient(circle at 70% 18%, rgba(37, 99, 235, 0.16), transparent 34%),
     radial-gradient(circle at 10% 84%, rgba(14, 116, 144, 0.13), transparent 32%);
   padding: clamp(24px, 6vw, 84px);
+}
+
+.dark .login-page {
+  background:
+    linear-gradient(120deg, rgba(29, 27, 25, 0.98), rgba(35, 31, 28, 0.94) 48%, rgba(24, 23, 21, 0.98)),
+    radial-gradient(circle at 70% 18%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 34%),
+    radial-gradient(circle at 10% 84%, rgba(254, 239, 225, 0.08), transparent 32%);
 }
 
 .login-copy {
@@ -201,6 +238,17 @@ th {
   line-height: 1.6;
 }
 
+.dark .login-copy p,
+.dark .login-panel label,
+.dark .field,
+.dark .sidebar-footer,
+.dark .side-nav button,
+.dark .side-config-menu summary,
+.dark .side-config-button,
+.dark .side-logout {
+  color: var(--muted);
+}
+
 .login-showcase {
   display: grid;
   align-self: center;
@@ -226,6 +274,10 @@ th {
   line-height: 1.6;
 }
 
+.dark .seo-text {
+  background: color-mix(in srgb, var(--panel-surface) 76%, transparent);
+}
+
 .login-panel,
 .form-panel,
 .detail-panel,
@@ -245,9 +297,18 @@ th {
   backdrop-filter: blur(18px);
 }
 
+.dark .login-panel {
+  background: color-mix(in srgb, var(--panel-surface) 88%, transparent);
+}
+
 .login-panel h2 {
   margin: 0;
   font-size: 1.55rem;
+}
+
+.login-theme-toggle {
+  justify-self: end;
+  width: 154px;
 }
 
 .login-panel label,
@@ -317,7 +378,7 @@ th {
 .app-shell {
   --sidebar-width: 236px;
   min-height: 100vh;
-  background: linear-gradient(180deg, rgba(248, 251, 255, 0.98), rgba(240, 246, 255, 0.96));
+  background: var(--app-background);
 }
 
 .app-shell.sidebar-collapsed {
@@ -334,7 +395,7 @@ th {
   grid-template-rows: auto 1fr auto;
   width: var(--sidebar-width);
   border-right: 1px solid rgba(148, 163, 184, 0.34);
-  background: rgba(255, 255, 255, 0.92);
+  background: color-mix(in srgb, var(--panel-surface) 92%, transparent);
   padding: 14px 12px;
   box-shadow: 12px 0 36px rgba(15, 23, 42, 0.07);
   transition: width 0.22s ease;
@@ -411,7 +472,7 @@ th {
 .side-config-menu summary:hover,
 .side-config-button:hover,
 .side-logout:hover {
-  background: color-mix(in srgb, var(--accent) 12%, #fff);
+  background: var(--hover-surface);
   color: var(--accent);
 }
 
@@ -489,9 +550,78 @@ th {
   width: 190px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #fff;
+  background: var(--panel-surface);
   padding: 8px;
   box-shadow: var(--shadow);
+}
+
+.theme-toggle {
+  position: relative;
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--input-surface);
+  color: var(--muted);
+  padding: 0 12px;
+  font-size: 0.9rem;
+  font-weight: 900;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+  border-color: color-mix(in srgb, var(--accent) 34%, var(--line));
+  background: var(--hover-surface);
+  color: var(--accent);
+}
+
+.theme-toggle svg {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  transition: transform 0.2s ease;
+}
+
+.theme-toggle:hover svg {
+  transform: rotate(-8deg) scale(1.04);
+}
+
+.theme-toggle span:not(.theme-toggle-glow) {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.theme-toggle-glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), transparent 46%, rgba(245, 158, 11, 0.18));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.theme-toggle[data-state='dark'] .theme-toggle-glow {
+  opacity: 1;
+}
+
+.sidebar-collapsed .theme-toggle {
+  justify-content: center;
+  padding: 0;
+}
+
+.sidebar-collapsed .theme-toggle span:not(.theme-toggle-glow) {
+  display: none;
 }
 
 .sidebar-collapsed .side-config-button {
@@ -513,7 +643,7 @@ th {
   height: 38px;
   place-items: center;
   border: 1px solid var(--line);
-  background: #fff;
+  background: var(--input-surface);
 }
 
 .view-toolbar,
@@ -4527,4 +4657,113 @@ th {
   .field {
     grid-column: auto;
   }
+}
+
+.dark .login-panel,
+.dark .form-panel,
+.dark .detail-panel,
+.dark .empty-panel,
+.dark .report-panel,
+.dark .metric-card,
+.dark .table-card,
+.dark .summary-card,
+.dark .category-card,
+.dark .category-item,
+.dark .form-modal-card,
+.dark .kanban-column,
+.dark .kanban-card,
+.dark .agenda-month-view,
+.dark .agenda-day-cell,
+.dark .agenda-list-card,
+.dark .whatsapp-crm,
+.dark .whatsapp-sidebar,
+.dark .whatsapp-chat,
+.dark .whatsapp-message-card,
+.dark .client-portal-shell,
+.dark .client-portal-hero,
+.dark .client-portal-card,
+.dark .user-table-row,
+.dark .user-create-card,
+.dark .search-box {
+  background-color: var(--panel-surface);
+  color: var(--app-text);
+}
+
+.dark .search-box,
+.dark .compact-filter,
+.dark .client-filter,
+.dark .agenda-view-switch,
+.dark .finance-filter-row,
+.dark .service-search-row,
+.dark .user-filter-row,
+.dark .checkbox-grid,
+.dark .permission-block,
+.dark .side-config-actions {
+  background-color: var(--subtle-surface);
+}
+
+.dark .btn:not(.primary),
+.dark .secondary-btn,
+.dark .ghost-btn,
+.dark .file-link,
+.dark .agenda-nav-controls button,
+.dark .agenda-view-switch button {
+  background-color: var(--input-surface);
+  color: var(--app-text);
+}
+
+.dark .btn:not(.primary):hover,
+.dark .secondary-btn:hover,
+.dark .ghost-btn:hover,
+.dark .file-link:hover,
+.dark .agenda-nav-controls button:hover,
+.dark .agenda-view-switch button:hover {
+  background-color: var(--hover-surface);
+  color: var(--accent);
+}
+
+.dark .login-copy p,
+.dark .dashboard-guidance,
+.dark .muted,
+.dark .small-muted,
+.dark .metric-card span,
+.dark .summary-card span,
+.dark .category-card small,
+.dark .category-item small,
+.dark .table-meta,
+.dark .panel-subtitle,
+.dark .empty-panel p,
+.dark .client-portal-header span,
+.dark .whatsapp-message-meta,
+.dark .agenda-day-cell small,
+.dark .kanban-card small,
+.dark th {
+  color: var(--muted);
+}
+
+.dark .form-modal-backdrop {
+  background: rgba(0, 0, 0, 0.62);
+}
+
+.dark .form-modal-card {
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.62);
+}
+
+.dark .status-pill,
+.dark .tag,
+.dark .mini-badge,
+.dark .client-tag,
+.dark .agenda-event {
+  filter: saturate(0.92) brightness(0.96);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+.dark::view-transition-old(root),
+.dark::view-transition-new(root) {
+  mix-blend-mode: normal;
 }
