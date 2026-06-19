@@ -1226,6 +1226,7 @@ function App() {
   const [clientServiceFilter, setClientServiceFilter] = useState('');
   const [clientCnpjLookupLoading, setClientCnpjLookupLoading] = useState(false);
   const [lastClientCnpjLookup, setLastClientCnpjLookup] = useState('');
+  const [resourceMasterCompanyFilter, setResourceMasterCompanyFilter] = useState('');
   const [resourceNameFilter, setResourceNameFilter] = useState('');
   const [resourceServiceFilter, setResourceServiceFilter] = useState('');
   const [userNameFilter, setUserNameFilter] = useState('');
@@ -1846,6 +1847,11 @@ function App() {
   }
 
   function openView(nextView: ViewId) {
+    if (nextView === 'resources') {
+      setResourceMasterCompanyFilter('');
+      setResourceNameFilter('');
+      setResourceServiceFilter('');
+    }
     if (nextView === 'activities') {
       setSelectedClientId('');
       setActivityMasterCompanyFilter('');
@@ -2429,14 +2435,15 @@ function App() {
     const nameTerm = resourceNameFilter.toLowerCase();
     const serviceTerm = resourceServiceFilter.toLowerCase();
     return (data?.resources || []).filter((resource) => {
+      const matchesMasterCompany = !resourceMasterCompanyFilter || resource.masterCompanyId === resourceMasterCompanyFilter;
       const nameText = [resource.name, resource.role, resource.email, resource.whatsapp, joinText(resource.skills)].join(' ').toLowerCase();
       const serviceText = [...resourceAllocatedServiceIds(resource.id)]
         .map((serviceId) => serviceNameMap.get(serviceId) || '')
         .join(' ')
         .toLowerCase();
-      return (!nameTerm || nameText.includes(nameTerm)) && (!serviceTerm || serviceText.includes(serviceTerm));
+      return matchesMasterCompany && (!nameTerm || nameText.includes(nameTerm)) && (!serviceTerm || serviceText.includes(serviceTerm));
     });
-  }, [data?.resources, resourceAllocatedServiceIds, resourceNameFilter, resourceServiceFilter, serviceNameMap]);
+  }, [data?.resources, resourceAllocatedServiceIds, resourceMasterCompanyFilter, resourceNameFilter, resourceServiceFilter, serviceNameMap]);
 
   const filteredActivities = useMemo(() => {
     return (data?.activities || []).filter((activity) => {
@@ -4188,18 +4195,36 @@ function App() {
   }
 
   function renderResources() {
+    const resourceMasterCompanies = accessibleMasterCompanies();
     return (
       <section className="workspace">
         <div className="services-control-panel">
           <div className="service-search-row">
-            <div className="search-box service-search-box">
-              <Search size={18} />
-              <input placeholder="Buscar pessoa" value={resourceNameFilter} onChange={(event) => setResourceNameFilter(event.target.value)} />
-            </div>
-            <div className="search-box service-search-box">
-              <Search size={18} />
-              <input placeholder="Buscar serviços alocados" value={resourceServiceFilter} onChange={(event) => setResourceServiceFilter(event.target.value)} />
-            </div>
+            {resourceMasterCompanies.length > 1 && (
+              <label className="compact-filter">
+                <span>Empresa master</span>
+                <select value={resourceMasterCompanyFilter} onChange={(event) => setResourceMasterCompanyFilter(event.target.value)}>
+                  <option value="">Todas as empresas master</option>
+                  {resourceMasterCompanies.map((company) => (
+                    <option key={company.id} value={company.id}>{company.name}</option>
+                  ))}
+                </select>
+              </label>
+            )}
+            <label className="compact-filter resource-search-filter">
+              <span>Pessoa</span>
+              <div className="search-box service-search-box">
+                <Search size={18} />
+                <input placeholder="Buscar pessoa" value={resourceNameFilter} onChange={(event) => setResourceNameFilter(event.target.value)} />
+              </div>
+            </label>
+            <label className="compact-filter resource-search-filter">
+              <span>Serviços alocados</span>
+              <div className="search-box service-search-box">
+                <Search size={18} />
+                <input placeholder="Buscar serviços alocados" value={resourceServiceFilter} onChange={(event) => setResourceServiceFilter(event.target.value)} />
+              </div>
+            </label>
           </div>
         </div>
         <div className="section-actions">

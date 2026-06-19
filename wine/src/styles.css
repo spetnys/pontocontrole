@@ -1020,6 +1020,14 @@ th {
   flex: 0 0 330px;
 }
 
+.service-search-row .resource-search-filter {
+  flex: 0 0 330px;
+}
+
+.resource-search-filter .search-box {
+  width: 100%;
+}
+
 .service-search-row select {
   flex: 0 0 220px;
   width: auto;

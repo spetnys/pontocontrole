@@ -5,6 +5,25 @@ pendencias.
 
 ## 2026-06-18
 
+- Pedido do usuario: em Equipe, adicionar filtro de empresa master e titulos nos
+  campos de busca/filtro.
+- Data/hora: 2026-06-19 16:56 UTC.
+- Contexto: a aplicacao `wine` agora suporta operacao multiempresa e a lista de
+  pessoas precisava desse recorte.
+- Arquivos analisados: `../dreamteam.md`, `src/App.tsx`, `src/styles.css`,
+  `../dreamteam-log.md`, `dreamteam-log.md`.
+- Decisoes: mostrar `Empresa master` somente quando houver mais de uma master
+  acessivel; titular os campos `Pessoa` e `Serviços alocados`; resetar filtros
+  ao entrar em Equipe.
+- Arquivos alterados: `src/App.tsx`, `src/styles.css`,
+  `../dreamteam-log.md`, `dreamteam-log.md`.
+- O que mudou: tela Equipe permite filtrar pessoas por master e tem labels
+  claros nos filtros.
+- Como desfazer: reverter `src/App.tsx` e `src/styles.css`.
+- Testes executados: `npm run build`.
+- Resultados: build Vite passou.
+- Pendencias: publicar em producao e validar health checks.
+
 - Pedido do usuario: corrigir publicacao no GitHub para que a branch `main`
   mostre os commits retroativos em vez de apenas `Initial commit`.
 - Data/hora: 2026-06-19 00:00 UTC.
