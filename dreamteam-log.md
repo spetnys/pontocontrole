@@ -27,11 +27,15 @@ pendencias.
 - Como desfazer: remover `.git` e `.gitignore`; se ja houver push, remover ou
   recriar o repositorio remoto conforme necessidade.
 - Testes executados: `git status --short`; `git status --ignored --short`;
-  verificacao de chave SSH do GitHub ja havia retornado autenticacao com
-  sucesso.
-- Resultados: `.git` antigo estava vazio/invalido; novo Git local em preparacao.
-- Pendencias: criar commits retroativos e configurar/push remoto quando a URL
-  SSH do repositorio estiver disponivel.
+  `git add .`; `git commit`; commits retroativos com `git commit --allow-empty`;
+  `git log --oneline --decorate --date=iso`; `git remote -v`; configuracao
+  `core.sshCommand` com a chave SSH do projeto.
+- Resultados: `.git` antigo estava vazio/invalido; novo Git local foi criado
+  com 27 commits, sendo um snapshot inicial reconstruido e 26 marcos
+  retroativos baseados nos logs; `git status --short` ficou limpo; ainda nao ha
+  remoto configurado.
+- Pendencias: receber a URL SSH do repositorio GitHub para configurar `origin`
+  e fazer `git push -u origin main`.
 
 - Pedido do usuario: permitir que a administradora geral crie clientes
   escolhendo a empresa master, filtre atividades por empresa master e configure

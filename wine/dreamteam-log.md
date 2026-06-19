@@ -21,9 +21,14 @@ pendencias.
   seguro.
 - Como desfazer: remover `../.git` e `../.gitignore`; desfazer push remoto se
   for publicado.
-- Testes executados: `git status --short`; `git status --ignored --short`.
-- Resultados: dependencias, build, `.env` e dados locais ficaram ignorados.
-- Pendencias: criar commits retroativos e configurar remoto SSH do GitHub.
+- Testes executados: `git status --short`; `git status --ignored --short`;
+  `git add .`; `git commit`; commits retroativos com `git commit --allow-empty`;
+  `git log --oneline --decorate --date=iso`; `git remote -v`.
+- Resultados: dependencias, build, `.env` e dados locais ficaram ignorados; o
+  repositorio local foi criado com 27 commits reconstruidos, incluindo marcos
+  retroativos baseados nos logs.
+- Pendencias: receber a URL SSH do repositorio GitHub para configurar `origin`
+  e publicar a branch `main`.
 
 - Pedido do usuario: permitir operacao multiempresa para administradora geral:
   criar clientes escolhendo empresa master, filtrar atividades por master e
