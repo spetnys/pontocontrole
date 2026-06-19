@@ -1264,6 +1264,7 @@ function App() {
   const [selectedClientId, setSelectedClientId] = useState('');
   const [activityMasterCompanyFilter, setActivityMasterCompanyFilter] = useState('');
   const [selectedServiceId, setSelectedServiceId] = useState('');
+  const [serviceMasterCompanyFilter, setServiceMasterCompanyFilter] = useState('');
   const [serviceStatusFilter, setServiceStatusFilter] = useState('');
   const [serviceCategoryFilter, setServiceCategoryFilter] = useState('');
   const [servicePeriodicityFilter, setServicePeriodicityFilter] = useState('');
@@ -1847,6 +1848,13 @@ function App() {
   }
 
   function openView(nextView: ViewId) {
+    if (nextView === 'services') {
+      setQuery('');
+      setServiceMasterCompanyFilter('');
+      setServiceStatusFilter('');
+      setServiceCategoryFilter('');
+      setServicePeriodicityFilter('');
+    }
     if (nextView === 'resources') {
       setResourceMasterCompanyFilter('');
       setResourceNameFilter('');
@@ -2423,13 +2431,14 @@ function App() {
   const filteredServices = useMemo(() => {
     const term = query.toLowerCase();
     return (data?.services || []).filter((service) => {
+      const matchesMasterCompany = !serviceMasterCompanyFilter || service.masterCompanyId === serviceMasterCompanyFilter;
       const matchesSearch = [service.name, service.description, service.category].join(' ').toLowerCase().includes(term);
       const matchesStatus = !serviceStatusFilter || service.status === serviceStatusFilter;
       const matchesCategory = !serviceCategoryFilter || service.category === serviceCategoryFilter;
       const matchesPeriodicity = !servicePeriodicityFilter || service.suggestedPeriodicity === servicePeriodicityFilter;
-      return matchesSearch && matchesStatus && matchesCategory && matchesPeriodicity;
+      return matchesMasterCompany && matchesSearch && matchesStatus && matchesCategory && matchesPeriodicity;
     });
-  }, [data?.services, query, serviceCategoryFilter, servicePeriodicityFilter, serviceStatusFilter]);
+  }, [data?.services, query, serviceCategoryFilter, serviceMasterCompanyFilter, servicePeriodicityFilter, serviceStatusFilter]);
 
   const filteredResources = useMemo(() => {
     const nameTerm = resourceNameFilter.toLowerCase();
@@ -3594,7 +3603,8 @@ function App() {
   }
 
   function renderServices() {
-    const selectedService = data.services.find((service) => service.id === (selectedServiceId || filteredServices[0]?.id));
+    const serviceMasterCompanies = accessibleMasterCompanies();
+    const selectedService = filteredServices.find((service) => service.id === selectedServiceId) || filteredServices[0];
     const serviceMapIndex = new Map<string, ServiceDefinition[]>();
     filteredServices.forEach((service) => {
       const category = service.category || 'Sem categoria';
@@ -3616,6 +3626,17 @@ function App() {
               <Search size={18} />
               <input placeholder="Buscar serviço" value={query} onChange={(event) => setQuery(event.target.value)} />
             </div>
+            {serviceMasterCompanies.length > 1 && (
+              <label className="compact-filter">
+                <span>Empresa master</span>
+                <select value={serviceMasterCompanyFilter} onChange={(event) => setServiceMasterCompanyFilter(event.target.value)}>
+                  <option value="">Todas as empresas master</option>
+                  {serviceMasterCompanies.map((company) => (
+                    <option key={company.id} value={company.id}>{company.name}</option>
+                  ))}
+                </select>
+              </label>
+            )}
             <select value={serviceStatusFilter} onChange={(event) => setServiceStatusFilter(event.target.value)}>
               <option value="">Todos os status</option>
               <option value="active">Ativo</option>

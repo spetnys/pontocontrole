@@ -5,6 +5,25 @@ pendencias.
 
 ## 2026-06-18
 
+- Pedido do usuario: em Serviços, permitir procurar/filtrar por empresa master.
+- Data/hora: 2026-06-19 18:51 UTC.
+- Contexto: depois de adicionar filtro por empresa master em Equipe, a tela de
+  Serviços também precisava do mesmo recorte para operacao multiempresa.
+- Arquivos analisados: `dreamteam.md`, `wine/src/App.tsx`, estado Git.
+- Decisoes: adicionar estado `serviceMasterCompanyFilter`; mostrar o seletor
+  `Empresa master` quando houver mais de uma master acessivel; aplicar o filtro
+  em `filteredServices`; resetar filtros ao abrir Serviços; manter a selecao do
+  detalhe limitada aos serviços filtrados.
+- Motivos: consistencia operacional entre Equipe, Atividades e Serviços sem
+  alterar autorizacao de backend.
+- Arquivos alterados: `wine/src/App.tsx`, `dreamteam-log.md`,
+  `wine/dreamteam-log.md`.
+- O que mudou: Serviços agora pode ser filtrado por empresa master.
+- Como desfazer: reverter `wine/src/App.tsx` deste commit.
+- Testes executados: `npm run build`.
+- Resultados: build Vite passou.
+- Pendencias: publicar em producao e validar health checks.
+
 - Pedido do usuario: em Equipe, adicionar opcao de empresa master nos filtros e
   colocar titulo nos campos de filtro e busca.
 - Data/hora: 2026-06-19 16:56 UTC.

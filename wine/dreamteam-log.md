@@ -5,6 +5,24 @@ pendencias.
 
 ## 2026-06-18
 
+- Pedido do usuario: em Serviços, permitir procurar/filtrar por empresa master.
+- Data/hora: 2026-06-19 18:51 UTC.
+- Contexto: a tela de Serviços precisava do mesmo recorte multiempresa aplicado
+  em Equipe.
+- Arquivos analisados: `../dreamteam.md`, `src/App.tsx`,
+  `../dreamteam-log.md`, `dreamteam-log.md`.
+- Decisoes: incluir filtro `Empresa master` quando houver mais de uma master
+  acessivel; filtrar `filteredServices`; resetar filtros ao entrar em Serviços;
+  limitar o detalhe selecionado aos itens filtrados.
+- Arquivos alterados: `src/App.tsx`, `../dreamteam-log.md`,
+  `dreamteam-log.md`.
+- O que mudou: lista e mapa de Serviços passaram a aceitar filtro por empresa
+  master.
+- Como desfazer: reverter `src/App.tsx`.
+- Testes executados: `npm run build`.
+- Resultados: build Vite passou.
+- Pendencias: publicar em producao e validar health checks.
+
 - Pedido do usuario: em Equipe, adicionar filtro de empresa master e titulos nos
   campos de busca/filtro.
 - Data/hora: 2026-06-19 16:56 UTC.
