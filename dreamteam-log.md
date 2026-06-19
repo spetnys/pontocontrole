@@ -20,9 +20,13 @@ pendencias.
   `wine/dreamteam-log.md`.
 - O que mudou: Serviços agora pode ser filtrado por empresa master.
 - Como desfazer: reverter `wine/src/App.tsx` deste commit.
-- Testes executados: `npm run build`.
-- Resultados: build Vite passou.
-- Pendencias: publicar em producao e validar health checks.
+- Testes executados: `npm run build`; `sudo ./scripts/deploy-docker-run.sh`;
+  `curl -fsS https://adegaweb.com.br/api/health`;
+  `curl -fsS https://www.adegaweb.com.br/api/health`; `sudo -n docker ps`.
+- Resultados: build Vite passou; deploy em producao concluido; os dois
+  dominios retornaram `{"ok":true,"app":"ponto-controle","store":"postgres"}`;
+  container `ponto-controle-app` ficou healthy.
+- Pendencias: nenhuma.
 
 - Pedido do usuario: em Equipe, adicionar opcao de empresa master nos filtros e
   colocar titulo nos campos de filtro e busca.
