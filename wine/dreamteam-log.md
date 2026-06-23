@@ -3,6 +3,29 @@
 Registro auditavel de pedidos, leituras, decisoes, alteracoes, testes e
 pendencias.
 
+## 2026-06-23
+
+- Pedido do usuario: permitir concluir uma atividade vencida criada pela agenda
+  recorrente e gerar a proxima atividade da recorrencia em Planejamento.
+- Data/hora: 2026-06-23 21:04 UTC.
+- Contexto: a atividade vinda de agenda recorrente podia falhar ao ser movida
+  para Concluida porque a edicao de atividades exigia servico contratado, mesmo
+  quando a origem era a Agenda.
+- Arquivos analisados: `../dreamteam.md`, `server/index.js`, `src/App.tsx`,
+  `../dreamteam-log.md`, `dreamteam-log.md`.
+- Decisoes: no endpoint de edicao de atividades, identificar agenda vinculada e
+  dispensar a exigencia de servico contratado somente para essa atividade
+  vinculada; preservar a regra para atividades manuais.
+- Arquivos alterados: `server/index.js`, `../dreamteam-log.md`,
+  `dreamteam-log.md`.
+- O que mudou: atividade recorrente da agenda pode ser concluida mesmo vencida
+  e sem contrato vinculado; a rotina existente continua criando a proxima
+  ocorrencia em Planejada.
+- Como desfazer: reverter `server/index.js`.
+- Testes executados: `node --check server/index.js`; `npm run build`.
+- Resultados: sintaxe do servidor passou; build Vite passou.
+- Pendencias: publicar em producao e validar health checks.
+
 ## 2026-06-18
 
 - Pedido do usuario: Agenda tambem deve permitir agendar por empresa master,

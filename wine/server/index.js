@@ -3068,13 +3068,14 @@ app.put('/api/activities/:id', requireModule('activities'), requireAction('edit'
     res.status(404).json({ message: 'Atividade não encontrada.' });
     return;
   }
+  const linkedAgenda = (store.agendaEvents || []).find((event) => event.activityId === item.id);
   const activity = cleanActivity(req.body, item);
   if (!canAccessClient(req.user, activity.clientId, store)) {
     res.status(403).json({ message: 'Você não pode mover atividade para este cliente.' });
     return;
   }
   try {
-    validateClientServiceLink(store, req.user, activity, { requireClientService: true });
+    validateClientServiceLink(store, req.user, activity, { requireClientService: !linkedAgenda });
   } catch (error) {
     res.status(error.status || 400).json({ message: error.message });
     return;

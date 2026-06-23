@@ -3,6 +3,36 @@
 Registro auditavel de pedidos, leituras, decisoes, alteracoes, testes e
 pendencias.
 
+## 2026-06-23
+
+- Pedido do usuario: permitir concluir uma atividade vencida que veio de agenda
+  recorrente, inclusive movendo de Planejada para Concluida, e gerar a proxima
+  atividade recorrente em Planejamento.
+- Data/hora: 2026-06-23 21:04 UTC.
+- Contexto: atividades criadas automaticamente pela Agenda podem nao ter
+  servico contratado vinculado; a validacao geral de atividades exigia servico
+  contratado em toda edicao e podia impedir a conclusao antes da rotina que gera
+  a proxima ocorrencia.
+- Arquivos analisados: `dreamteam.md`, `wine/server/index.js`,
+  `wine/src/App.tsx`, `dreamteam-log.md`, `wine/dreamteam-log.md`.
+- Decisoes: no `PUT /api/activities/:id`, detectar se a atividade esta
+  vinculada a uma agenda; para atividades vinculadas, nao exigir
+  `clientServiceId/serviceId` na validacao de edicao; manter a exigencia para
+  atividades manuais.
+- Motivos: agenda recorrente deve permitir finalizar a atividade operacional
+  mesmo vencida e sem contrato vinculado, usando a rotina existente
+  `ensureNextRecurringActivityForCompletedActivity` para criar a proxima
+  atividade.
+- Arquivos alterados: `wine/server/index.js`, `dreamteam-log.md`,
+  `wine/dreamteam-log.md`.
+- O que mudou: atividade vinculada a agenda pode ser concluida mesmo sem
+  servico contratado; ao concluir recorrencia, a proxima atividade continua
+  sendo criada em `planned`.
+- Como desfazer: reverter `wine/server/index.js` deste commit.
+- Testes executados: `node --check server/index.js`; `npm run build`.
+- Resultados: sintaxe do servidor passou; build Vite passou.
+- Pendencias: publicar em producao e validar health checks.
+
 ## 2026-06-18
 
 - Pedido do usuario: Agenda tambem deve permitir agendar por empresa master,
