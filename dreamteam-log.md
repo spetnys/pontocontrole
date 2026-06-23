@@ -29,9 +29,15 @@ pendencias.
   servico contratado; ao concluir recorrencia, a proxima atividade continua
   sendo criada em `planned`.
 - Como desfazer: reverter `wine/server/index.js` deste commit.
-- Testes executados: `node --check server/index.js`; `npm run build`.
-- Resultados: sintaxe do servidor passou; build Vite passou.
-- Pendencias: publicar em producao e validar health checks.
+- Testes executados: `node --check server/index.js`; `npm run build`;
+  `sudo ./scripts/deploy-docker-run.sh`;
+  `curl -fsS https://adegaweb.com.br/api/health`;
+  `curl -fsS https://www.adegaweb.com.br/api/health`; `sudo -n docker ps`.
+- Resultados: sintaxe do servidor passou; build Vite passou; deploy em
+  producao concluido; os dois dominios retornaram
+  `{"ok":true,"app":"ponto-controle","store":"postgres"}`; container
+  `ponto-controle-app` ficou healthy.
+- Pendencias: nenhuma.
 
 ## 2026-06-18
 
