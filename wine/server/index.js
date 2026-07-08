@@ -2329,7 +2329,8 @@ function bootstrapPayload(user, store) {
     clientPortal || hasModule(user, 'finance') || hasModule(user, 'dashboard') || (hasModule(user, 'services') && hasAction(user, 'viewFinancialValues'))
       ? filterFinances(user, store.finances, store.clients)
       : [];
-  const whatsappMessages = hasModule(user, 'whatsapp') ? filterWhatsappMessages(user, store.whatsappMessages) : [];
+  // WhatsApp history can carry media-sized payloads; load it only through /api/whatsapp.
+  const whatsappMessages = [];
   const visibleUsers = user.isMaster
     ? [masterAccount(store.settings?.defaultTheme), ...store.users]
     : store.users.filter((item) => canAccessMasterCompany(user, item.masterCompanyId));

@@ -949,3 +949,31 @@ pendencias.
   `ponto-controle-app` recriado.
 - Validacao: `npm run build`, build Docker e `https://adegaweb.com.br/api/health`
   OK com store `postgres`.
+
+- Pedido do usuario: investigar e corrigir lentidao geral ao mover atividades,
+  salvar agenda e executar acoes comuns.
+- Data/hora: 2026-07-08 21:15:05 UTC.
+- Contexto: acoes pequenas estavam lentas em producao. A medicao mostrou
+  `app_store` com cerca de 361 MB, JSON de negocio com 96 MB e
+  `whatsappMessages` sozinho com cerca de 95 MB. Logs do app tambem tinham
+  `PayloadTooLargeError`.
+- Arquivos analisados: `dreamteam.md`, `wine/server/index.js`,
+  `dreamteam-log.md`, `wine/dreamteam-log.md`.
+- Decisoes: remover o historico de WhatsApp do `bootstrapPayload` global e
+  manter o carregamento do historico somente pelo endpoint dedicado
+  `/api/whatsapp`.
+- Motivos: respostas globais sao retornadas apos acoes comuns; enviar 95 MB de
+  historico de WhatsApp em cada fluxo degrada agenda, atividades e demais
+  modulos que nao precisam dessas mensagens.
+- Arquivos alterados: `wine/server/index.js`, `dreamteam-log.md`,
+  `wine/dreamteam-log.md`.
+- O que mudou: `bootstrapPayload` passa a retornar `whatsappMessages: []`; o
+  modulo WhatsApp continua usando seus endpoints proprios para mensagens e
+  mensagens apagadas.
+- Como desfazer: restaurar a linha anterior em `bootstrapPayload`, retornando
+  `filterWhatsappMessages(user, store.whatsappMessages)` para usuarios com o
+  modulo WhatsApp.
+- Testes executados: `node --check server/index.js`; `npm run build`.
+- Resultados: sintaxe do servidor valida; build Vite passou, gerando
+  `dist/assets/index-5c6siVF1.js` e `dist/assets/index-C1dhWKlM.css`.
+- Pendencias: validar health publico e publicar em producao.
