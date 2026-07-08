@@ -976,4 +976,11 @@ pendencias.
 - Testes executados: `node --check server/index.js`; `npm run build`.
 - Resultados: sintaxe do servidor valida; build Vite passou, gerando
   `dist/assets/index-5c6siVF1.js` e `dist/assets/index-C1dhWKlM.css`.
-- Pendencias: validar health publico e publicar em producao.
+- Deploy: `sudo ./scripts/deploy-docker-run.sh` executado em `wine`; imagem
+  `adegaweb-ponto-controle:latest` reconstruida e container recriado.
+- Validacao em producao: `https://adegaweb.com.br/api/health` e
+  `https://www.adegaweb.com.br/api/health` retornaram
+  `{"ok":true,"app":"ponto-controle","store":"postgres"}`; container
+  `ponto-controle-app` ficou `healthy`.
+- Pendencias: acompanhar uso real; se ainda houver lentidao, o proximo passo e
+  compactar/sanitizar anexos antigos em `whatsappMessages` com backup antes.
