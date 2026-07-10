@@ -1013,5 +1013,15 @@ pendencias.
 - Testes executados: `node --check server/index.js`; `npm run build`.
 - Resultados: sintaxe valida; build Vite passou com
   `dist/assets/index-BG7GFNcR.js`.
-- Pendencias: publicar em producao, forcar uma leitura do store para executar a
-  compactacao automatica e medir novamente o tamanho do JSON.
+- Deploy: `sudo ./scripts/deploy-docker-run.sh` executado em `wine`; imagem
+  `adegaweb-ponto-controle:latest` reconstruida e container recriado.
+- Validacao em producao: `https://adegaweb.com.br/api/public-settings`
+  respondeu em 0,114767s; `https://adegaweb.com.br/api/health` e
+  `https://www.adegaweb.com.br/api/health` retornaram OK; container
+  `ponto-controle-app` ficou `healthy`.
+- Resultado da compactacao: `data_size` caiu de 96 MB para 1280 kB;
+  `whatsappMessages` caiu de 95 MB para 171 kB; anexos cairam para 11 kB;
+  `dataUrl` em anexos ficou 0; `EXPLAIN ANALYZE SELECT data` executou em
+  0,049 ms.
+- Pendencias: acompanhar uso real nas acoes autenticadas; se ainda houver
+  lentidao perceptivel, o proximo gargalo deve ser medido no frontend/rede.
