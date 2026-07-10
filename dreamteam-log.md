@@ -984,3 +984,34 @@ pendencias.
   `ponto-controle-app` ficou `healthy`.
 - Pendencias: acompanhar uso real; se ainda houver lentidao, o proximo passo e
   compactar/sanitizar anexos antigos em `whatsappMessages` com backup antes.
+
+- Pedido do usuario: a lentidao melhorou, mas ainda continua em torno de 2 a 3
+  segundos por acao.
+- Data/hora: 2026-07-09 17:11:27 UTC.
+- Contexto: depois de remover `whatsappMessages` do bootstrap global, as acoes
+  melhoraram, mas o store principal ainda tinha 96 MB. Nova medicao mostrou
+  `whatsappMessages` com 95 MB, 300 mensagens e 94 anexos; os anexos sozinhos
+  somavam 95 MB, principalmente videos `video/mp4` salvos em base64.
+- Arquivos analisados: `wine/server/index.js`, `wine/src/App.tsx`,
+  `dreamteam-log.md`, `wine/dreamteam-log.md`.
+- Decisoes: compactar anexos do WhatsApp removendo `dataUrl` em base64 do
+  historico; manter metadados como nome, tipo e tamanho; impedir que novos
+  webhooks salvem base64 bruto; ajustar a UI para mostrar anexo arquivado sem
+  link quebrado.
+- Motivos: o banco grava o JSONB inteiro a cada alteracao. Mesmo sem enviar as
+  mensagens no bootstrap, manter 95 MB de anexos no documento principal ainda
+  deixa agenda, atividades e outros modulos lentos.
+- Arquivos alterados: `wine/server/index.js`, `wine/src/App.tsx`,
+  `dreamteam-log.md`, `wine/dreamteam-log.md`.
+- O que mudou: `readStore` e `writeStore` compactam `whatsappMessages`;
+  `webhookMessageMedia` passa a registrar metadados de midia sem persistir o
+  base64; a tela do WhatsApp mostra anexos sem URL como item arquivado.
+- Como desfazer: reverter este commit e restaurar backup do banco se for
+  necessario recuperar os base64 antigos dos anexos. Backup criado antes do
+  deploy em `base de dados/ponto-controle-before-whatsapp-compact-20260709.dump`
+  com 73 MB.
+- Testes executados: `node --check server/index.js`; `npm run build`.
+- Resultados: sintaxe valida; build Vite passou com
+  `dist/assets/index-BG7GFNcR.js`.
+- Pendencias: publicar em producao, forcar uma leitura do store para executar a
+  compactacao automatica e medir novamente o tamanho do JSON.

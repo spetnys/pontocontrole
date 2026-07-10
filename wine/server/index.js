@@ -274,7 +274,8 @@ async function readStore() {
     const migrated = ensureTenantMigration(data);
     const financeChanged = ensureCurrentFinanceReceivables(data);
     const postFinanceMigration = ensureTenantMigration(data);
-    if (normalised || migrated || financeChanged || postFinanceMigration) {
+    const whatsappCompacted = compactWhatsappMessages(data);
+    if (normalised || migrated || financeChanged || postFinanceMigration || whatsappCompacted) {
       return await writeStore(data);
     }
     return data;
@@ -286,7 +287,8 @@ async function readStore() {
     const migrated = ensureTenantMigration(data);
     const financeChanged = ensureCurrentFinanceReceivables(data);
     const postFinanceMigration = ensureTenantMigration(data);
-    if (normalised || migrated || financeChanged || postFinanceMigration) {
+    const whatsappCompacted = compactWhatsappMessages(data);
+    if (normalised || migrated || financeChanged || postFinanceMigration || whatsappCompacted) {
       return await writeStore(data);
     }
     return data;
@@ -302,6 +304,7 @@ async function writeStore(store) {
   ensureTenantMigration(next);
   ensureCurrentFinanceReceivables(next);
   ensureTenantMigration(next);
+  compactWhatsappMessages(next);
   if (dbPool) {
     await ensureDatabase();
     await dbPool.query(
@@ -388,6 +391,46 @@ function publicSettings(store) {
     loginImageName: image?.name || 'login-ponto-controle.png',
     loginImageUpdatedAt: updatedAt,
   };
+}
+
+function compactWhatsappAttachment(attachment = null) {
+  if (!attachment || typeof attachment !== 'object') return null;
+  const type = cleanText(attachment.type, 'application/octet-stream').slice(0, 120);
+  const name = cleanText(
+    attachment.name,
+    type.startsWith('image/') ? 'imagem' : type.startsWith('audio/') ? 'audio' : type.startsWith('video/') ? 'video' : 'arquivo',
+  ).slice(0, 160);
+  const url = cleanText(attachment.url);
+  const dataUrl = cleanText(attachment.dataUrl);
+  const encoded = dataUrl.includes(',') ? dataUrl.split(',').pop() : '';
+  const estimatedSize = encoded ? Math.floor(encoded.length * 0.75) : 0;
+  const size = Number.isFinite(Number(attachment.size)) && Number(attachment.size) > 0
+    ? Number(attachment.size)
+    : estimatedSize;
+  const compacted = { name, type };
+  if (size) compacted.size = size;
+  if (/^https?:\/\//i.test(url)) compacted.url = url;
+  if (dataUrl && !compacted.url) compacted.archived = true;
+  return compacted;
+}
+
+function compactWhatsappMessages(store) {
+  if (!Array.isArray(store.whatsappMessages)) return false;
+  let changed = false;
+  store.whatsappMessages = store.whatsappMessages.map((message) => {
+    if (!message?.attachment) return message;
+    const compacted = compactWhatsappAttachment(message.attachment);
+    if (!compacted) {
+      changed = true;
+      return { ...message, attachment: null };
+    }
+    if (message.attachment.dataUrl || message.attachment.name !== compacted.name || message.attachment.type !== compacted.type || message.attachment.size !== compacted.size || message.attachment.url !== compacted.url) {
+      changed = true;
+      return { ...message, attachment: compacted };
+    }
+    return message;
+  });
+  return changed;
 }
 
 function fileFromDataUrl(file) {
@@ -1289,9 +1332,9 @@ function webhookMessageMedia(message = {}, item = {}) {
     firstNestedString(item, ['mediaUrl', 'downloadUrl', 'url']),
   );
   if (rawBase64) {
-    const dataUrl = rawBase64.startsWith('data:') ? rawBase64 : `data:${mimetype};base64,${rawBase64.replace(/^base64,/i, '')}`;
-    const approxSize = Math.floor((dataUrl.split(',')[1] || '').length * 0.75);
-    if (approxSize <= 8 * 1024 * 1024) return { name, type: mimetype, dataUrl, size: approxSize };
+    const body = rawBase64.startsWith('data:') ? rawBase64.split(',').pop() || '' : rawBase64.replace(/^base64,/i, '');
+    const approxSize = Math.floor(body.length * 0.75);
+    return { name, type: mimetype, size: approxSize, archived: true };
   }
   if (/^https?:\/\//i.test(url)) return { name, type: mimetype, url };
   return null;

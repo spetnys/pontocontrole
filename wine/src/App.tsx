@@ -303,6 +303,7 @@ type WhatsappAttachment = {
   dataUrl?: string;
   url?: string;
   size?: number;
+  archived?: boolean;
 };
 
 type WhatsappConversation = {
@@ -5771,7 +5772,7 @@ function App() {
                   ) : (
                     <p>{message.text}</p>
                   )}
-                  {message.attachment && (
+                  {message.attachment && (message.attachment.dataUrl || message.attachment.url) && (
                     <a
                       className="whatsapp-message-attachment"
                       href={message.attachment.dataUrl || message.attachment.url}
@@ -5788,6 +5789,12 @@ function App() {
                       )}
                       <span>{message.attachment.name || 'Arquivo recebido'}{message.attachment.size ? ` · ${fileSizeLabel(message.attachment.size)}` : ''}</span>
                     </a>
+                  )}
+                  {message.attachment && !message.attachment.dataUrl && !message.attachment.url && (
+                    <div className="whatsapp-message-attachment">
+                      <Paperclip size={16} />
+                      <span>{message.attachment.name || 'Arquivo recebido'}{message.attachment.size ? ` · ${fileSizeLabel(message.attachment.size)}` : ''}</span>
+                    </div>
                   )}
                   <span>{shortDateTime(message.createdAt)} · {message.direction === 'inbound' ? 'recebida' : message.status === 'failed' ? 'falhou' : message.editedAt ? 'editada' : 'enviada'}</span>
                   {message.error && <small>{message.error}</small>}
