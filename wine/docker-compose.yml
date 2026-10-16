@@ -43,9 +43,10 @@ services:
       - ponto_controle_data:/data
 
   backup:
-    image: postgres:16-alpine
+    image: guia-backup:postgres16
     container_name: ponto-controle-backup
     restart: unless-stopped
+    read_only: true
     depends_on:
       db:
         condition: service_healthy
@@ -54,16 +55,22 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-ponto_controle}
       POSTGRES_USER: ${POSTGRES_USER:-ponto_controle}
     volumes:
-      - ../base de dados/backups:/backups
+      - ${GUIA_BACKUP_CONFIG_HOST_PATH:-/home/sheila/.config/guiapreco-media/media.json}:/run/secrets/backup-storage.json:ro
+      - /run/guia-backups:/run/guia-backups
+    tmpfs:
+      - /var/lib/postgresql/data:rw,noexec,nosuid,size=1m
     command:
       - sh
-      - -c
+      - -ec
       - |
         while true; do
-          pg_dump -h db -U "$$POSTGRES_USER" "$$POSTGRES_DB" > "/backups/ponto-controle-$$(date +%Y%m%d-%H%M%S).sql"
-          find /backups -type f -name 'ponto-controle-*.sql' -mtime +14 -delete
-          sleep 86400
+          python3 /usr/local/bin/guia-backup.py daily --project PontoControle --extension sql --retention-days 15 -- pg_dump -h db -U "$$POSTGRES_USER" "$$POSTGRES_DB"
+          sleep 3600
         done
+    mem_limit: 256m
+    logging:
+      driver: json-file
+      options: {max-size: '10m', max-file: '2'}
 
   adegaweb:
     image: caddy:2-alpine

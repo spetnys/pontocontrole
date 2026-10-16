@@ -1025,3 +1025,81 @@ pendencias.
   0,049 ms.
 - Pendencias: acompanhar uso real nas acoes autenticadas; se ainda houver
   lentidao perceptivel, o proximo gargalo deve ser medido no frontend/rede.
+
+## 2026-10-11T21:34:41 — Navegador Docker w1.guiapreco.com.br
+Pedido: navegador Docker com login sheila e controle pelo Codex.
+Arquivos analisados: AGENTS.md, dreamteam.md, DREAMTEAM_COUNCIL.md, Caddyfile, Docker ativo e DNS.
+Decisao: adicionar somente o virtual host w1 com HTTPS e hash bcrypt; navegador separado em rede Docker propria, controle somente no loopback. Limites de memoria/logs; BrowserMetrics em tmpfs de 32 MB.
+Plano: validar Caddy candidato, iniciar navegador, conectar proxy a rede, aplicar bloco e recarregar; validar login, HTTPS, streaming e controle CDP.
+Reversao: restaurar /home/sheila/codex/guiapreco/browser/Caddyfile.before-browser, recarregar Caddy, docker-compose down em /home/sheila/codex/guiapreco/browser; perfil persistente preservado.
+Estado: preparacao; testes pendentes.
+
+### Conclusao 2026-10-11T21:37:30
+Caddyfile alterado apenas com virtual host w1. Container w1-browser em rede guiapreco-browser; Caddy conectado sem reiniciar outros servicos. HTTPS Lets Encrypt obtido; 401 sem credenciais, 200 com login, 404 no endpoint CDP publico. Controle local via Playwright CDP confirmou Example Domain e abriu Google. Interface HTTPS recebeu frames WebSocket; screenshot browser-web.png confirmou navegador visivel; nenhum erro JS. BrowserMetrics confirmado em tmpfs 32 MB. Imagem fixada por digest, logs limitados a 30 MB; memoria 4 GB. Arquivos e operacao em /home/sheila/codex/guiapreco/browser. Credencial temporaria de teste removida; senha somente em hash no proxy. Reversao em Caddyfile.before-browser. Rede mantida em reinicios; deploy.sh reconecta caso proxy seja recriado.
+
+## 2026-10-11T22:06:20 — Plataforma GuiaPreço
+Pedido autorizado: plataforma de ofertas indicada pela comunidade, identidade GuiaQR/GuiaPJ, login Google e agente Sentinela.
+Contexto: Caddy compartilhado em Docker; somente adicionar hosts guiapreco.com.br/www. Aplicacao propria, PostgreSQL isolado com volume e backup diario; controle do navegador w1 preservado.
+Arquivos analisados: Caddyfile, AGENTS/dreamteam/conselho (ja consultados), configs existentes, referencias publicas Promobit/GuiaQR/GuiaPJ, documentacao Google GIS. Sentinela revisou server.js/validation.js/schema.sql e suas correcoes foram aplicadas.
+Decisoes: cliente OAuth GuiaPreco Web no projeto existente guiapago, conta spetnys@gmail.com como admin; ID token verificado servidor, sem armazenamento de secret OAuth.
+Plano: iniciar containers e validar local; validar Caddy candidato, aplicar hosts, testar HTTPS/login/moderacao e persistencia.
+Reversao: restaurar /home/sheila/codex/guiapreco/app/Caddyfile.before-community, recarregar Caddy e parar app/backup GuiaPreco; preservar volume do banco.
+Pendencias: verificacao real do login e QA final.
+
+
+## 2026-10-11T23:51:16-03:00 — GuiaPreço publicado; autoria, importação, referência visual e SEO
+
+Pedido: clonar estrutura/modelo comunitário do Promobit em guiapreco.com.br, com identidade GuiaQR/GuiaPJ, banners/produtos autorizados, Google login, SEO e importador Docker de afiliados; destacar sempre quem indicou. Sentinela solicitada como agente de revisão.
+Contexto: proxy Caddy compartilhado em wine, aplicação/banco/worker GuiaPreço isolados; W1 com sessão existente. Não alterar demais sites, abas ou dados de negócio. Protocolo e conselho consultados na etapa preparatória já registrada.
+Arquivos analisados/alterados: app/server.js, validation.js, schema.sql, community.js/community-schema.sql, affiliate-api.js/affiliate-worker.js/affiliate-validation.js/affiliate-schema.sql, seo.js/seo-schema.sql, public/index.html/app.js/community-ui.js/style.css/layout.css/manifest.webmanifest/sw.js/assets, Dockerfile/compose/deploy, .env privado, OPERACAO.txt/BANNERS.txt; virtual hosts Caddy Guiapreço/W1 conforme entrada anterior.
+Resultado: aplicação online com Google OAuth criado no projeto existente sem mexer em outros clientes,98 ofertas reais com98 fotos e8 categorias, header/carrossel/cards/tipografia referenciados e cores próprias, sacola, links Varinha/Instagram e seta ao topo. Sem números fictícios nem cópia de votos/perfis. Comunidade, desejos, alertas, favoritos, conversa, moderação, privacidade e persistência PostgreSQL.
+Autoria fixada pelo usuário autenticado: importação, histórico, revisão, card, página e HTML/JSONLD. Importação automática ao colar produto no buscador/formulário; comentário próprio preservado ao trocar produto. Worker real ML gerou meli.la com foto/preço/título; Amazon leu foto/preço/título/descrição915 caracteres. Não promete transferência de comissão: ML usa a conta Varinha do W1; Amazon afiliada depende de AMAZON_ASSOCIATE_TAG real ainda não fornecida. Demais lojas aceitam indicação manual.
+SEO: slugs persistentes únicos, UUID antigo301 (inclusive link enviado pelo usuário), SSR/H1/autor, canonical/OG/Twitter/JSONLD nonceCSP, robots e sitemap99URLs; pendentes privados/expiradas noindex. Navegação/back conferida sem metadata anterior.
+GuiaQR: GET autenticado200; chave apenas em .env600, sem chave nos assets/logs. Nenhum QR criado; integração de interface pendente/opcional.
+Validação:21 testes passaram em QA isolado (12 checks SEO), permissões/origem/CSRF/XSS/Google inválido/autoria/moderação/privacidade, comunidade e fila. Navegador independente320/390/768/1440px,98 fotos carregadas, zero overflow/erro JS, fontes/medidas, geladeira, banner/header fixo/seta, paginação e retry. Sentinela aprovou revisão final e hover+clique em produção; assets v20261012-7. Login Google real confirmado anteriormente;2 contas reais e3 sessões válidas preservadas.
+Backup: guiapreco-final-seo-affiliates.dump privado restaurado com exit-on-error em banco separado;14 tabelas/98 ofertas/98 slugs/98 fotos/2 usuários. QA e bancos temporários removidos após checks. Proxy e demais contêineres continuam ativos; W1 não reiniciado.
+Reversão: guiapreco-app:before-deploy guarda imagem anterior; coluna slug aditiva. Para virtual host restaurar app/Caddyfile.before-community, validar/recarregar Caddy e parar somente serviços GuiaPreço; preservar banco/volume/W1. Recuperação de dados sempre após restaurar backup em banco separado.
+Pendências reais: ID de rastreamento Associados Amazon; contas pessoais se comissão individual for desejada; importadores afiliados específicos das demais lojas; QR de oferta ainda não integrado; backup externo não configurado.
+OpenClaw permanece removido/inativo conforme pedido anterior. Disco57GiB usados/137GiB livres (30%), perfil W1208MiB e BrowserMetrics limitado por tmpfs32MiB.
+
+
+## 2026-10-12T10:09:29-03:00 — Preparação: banners rotativos, menus e carregamento automático
+Pedido autorizado: acrescentar Netshoes/LG e campanhas atuais mantendo existentes, alternar topo e slide inicial em blocos de10 aberturas; reproduzir interações Categorias/Lojas/Cupons e carregar ofertas ao rolar.
+Veredito inicial D2: prosseguir. Produto aprova preservação de campanhas/fluxos; arquitetura aprova contador global PostgreSQL atômico; engenharia aprova mudança aditiva/reversível; QA ajusta para testar fronteiras/concorrência/scroll/filtros/retry; segurança aprova sem coleta de identidade; documentação registra migração e rollback.
+Contexto/arquivos: leitura app/server.js/seo.js/schema.sql/public/index.html/app.js/layout.css, compose/deploy, research/banner-sources.json, referência Promobit atual pública, protocolo/conselho já consultados. Proxy e W1 serão preservados.
+Decisões: contar apenas GET elegível da home, ignorar HEAD/prefetch/prerender, blocos floor((n-1)/10), counter persistente sem cookies de negócio; carrossel mantém setas/dots e variantes responsivas. IntersectionObserver reutiliza paginação e garante filtro/retry/fim sem duplicação. Cupons seguem dados reais/autoria.
+Reversão: imagem anterior before-deploy e backup antes da migração; novo contador é aditivo e independente de usuários/ofertas. Sem ações não autorizadas em serviços externos.
+Estado: referência coletada; implementação e testes pendentes.
+
+
+## 2026-10-12T11:35:40-03:00 — GuiaPreço: publicação, popup, Google e GitHub concluídos
+
+Pedido autorizado: campanhas Netshoes/LG e rotação a cada 10 visitas, menus Categorias/Lojas, busca por loja, cupons, carregamento automático, catálogo sem duplicatas, aviso flutuante de novas ofertas, avaliação GuiaQR, Google na conta Sheila e projeto completo obrigatório no GitHub.
+
+Veredito final D2: aprovado após revisão independente do agente Sentinela e correções. Produto: popup com contagem real e atualização voluntária; arquitetura: contadores persistentes e revisão de publicação serializada, migrações aditivas; engenharia: deduplicação, filtros, cancelamento/retry; QA: 27 testes Node, navegador independente e produção; segurança: áreas privadas protegidas e Analytics com consentimento; documentação: instalação portátil, validação e recuperação enviadas.
+
+Arquivos analisados/alterados: app/server.js, navigation-schema.sql, campaigns-schema.sql, feed-schema.sql, feed-query.js, product-key.js, seo.js, google-services.js, public/index.html/app.js/layout.css/feed-updates.js/analytics.js/analytics.css/assets; catálogo/seed em research; testes Node/navegador; app/deploy.sh e OPERACAO.txt; browser/verify.cjs; README/AGENTS/deploy/.env.example/scripts. Proxy compartilhado não foi alterado nesta etapa.
+
+Resultado online: assets v20261012-9, nove campanhas responsivas, Magalu/Netshoes em blocos globais de 10 GET elegíveis, menus/foco/overlay, lojas com logos/busca, cupons reais e rolagem automática até o fim do catálogo. Popup conta apenas novas publicações visíveis, inclusive aprovação tardia; preserva leitura após falha e se oculta durante menus/modais/cookies.
+
+Catálogo: 329 indicações publicadas, sendo 325 produtos e 4 cupons; 327 itens iniciais e 2 indicações reais preservadas. Identidades sem repetição. Todas as fotos HTTP200: 327 locais e 2 no CDN Mercado Livre. Sem autores, votos ou números de comunidade inventados. Snapshot final: 334 registros, 3 usuários, 4 sessões válidas, 334 slugs/fotos. Autoria real permanece nos cards/importação/revisão.
+
+Validação: 27 testes Node passaram sem falhas/skips em banco temporário guiapreco_qa. Navegador independente validou 320/390/768/1440px, fontes Rubik/Lato, nove banners, header, menus, cupons, cancelamento, erro/retry, rolagem/fim, popup e consentimento. Produção: 329 páginas SSR/H1/canonical/JSON-LD e 331 URLs únicas no sitemap; robots, Googlebot200, fotos/fontes/API. Sentinela aprovou HTTP/API, permissões, duas indicações reais preservadas e hashes dos scripts publicados. Verificador reutilizável scripts/verify-public.mjs incluído.
+
+Google: GA4 próprio guiapreco.com.br e fluxo Web na conta Sheila/Varinha, São Paulo/BRL; medição otimizada desativada. Teste independente real confirmou gtag200, page_view home/cupons204 após consentimento e revogação. Realtime autenticado mostrou eventos e acesso controlado do teste. Search Console do domínio verificado pelo usuário: sitemap enviado/processado com 331 URLs; pedido de indexação da home aceito, ainda detectada e não indexada. Vínculo Search Console→GA4 criado somente para GuiaPreço. Administração Google usou abas próprias em segundo plano, fechadas ao concluir; abas da pessoa e sessão W1 preservadas.
+
+GuiaQR: consultas autenticadas GET/qrcodes/detalhe/me200; recomendação de links por pessoa/oferta/canal em docs/guiaqr-rastreabilidade.md. Nenhum QR criado/alterado; compartilhamento atual usa URL canônica. Cliques não comprovam comissão. ML continua gerando link real pela conta Varinha; Amazon requer tag Associados real, demais lojas exigem integração específica para afiliado.
+
+Backup/reversão: dump privado antes da migração/carga e dump final guiapreco-final-catalog-google-20261012-112732.dump, diretório700/arquivos600. pg_restore --exit-on-error em banco separado confirmou 15 tabelas, 334 registros, 329 publicados, 334 slugs/fotos, 3 usuários, 4 sessões e revisão428. Banco de restauração removido; QA app/banco/rede/volume anônimo e configuração temporária removidos. Código anterior em guiapreco-app:before-deploy; migrações aditivas. Restaurar dados somente após definir ponto de recuperação.
+
+Publicação: app healthy e API saúde OK; somente app/backup/worker recriados. IDs/início de banco e W1 mantidos; demais projetos preservados. OpenClaw segue removido/inativo. df informado pelo usuário: 57 GiB usados, 136 GiB livres, 30%.
+
+GitHub obrigatório: https://github.com/marcelstfgit/guiapreco.com.br . Projeto completo em 0d88e06 e conclusão/validação em 8de187ef31870fd49f0ec02fb5ca8d7cd0f46083; push main confirmado, remoto igual ao HEAD e árvore limpa. 550 arquivos revisados sem credenciais privadas, banco, backups, perfil ou sessões. Instalação nova reproduzível com código/assets/migrações/catálogo/testes/Docker/procedimentos, usando credenciais e dados próprios.
+
+Pendências materiais: processamento/indexação do Google, tag Associados Amazon, comissão individual depende de conta/programa próprio, rastreamento pessoal GuiaQR ainda não ativado, backup externo não configurado.
+
+## 2026-10-16 — Backups remotos solicitados pelo usuário
+
+Veredito inicial: prosseguir com cautela. Pedido: mover os backups para área privada do Nextcloud imagens e impedir novas cópias persistentes no disco. Inspecionados AGENTS, dreamteam, conselho, compose e produtor ativo ponto-controle-backup. Risco principal: excluir a única cópia ou deixar rotina escrevendo local; mitigação: cópia em partes RAM, SHA256 por leitura integral, remoção local somente após confirmação técnica, sem fallback para disco. Produto: aprovar (libera disco); Arquitetura: aprovar (armazenamento remoto); Engenharia: aprovar (escopo restrito ao produtor); QA: ajustar até prova de captura real; Segurança: aprovar com pasta privada e segredo montado; Documentação: aprovar com log e reversão por Git. Plano: atualizar serviço de backup, validar o compose e o envio, recriar apenas o contêiner de backup; não recriar banco/aplicação. Reversão: recuperar script/compose anterior por Git e restaurar arquivos pelo Nextcloud quando necessário. Autorização explícita do usuário abrange mover cópias existentes e alterar as rotinas de todos os projetos; não há nova confirmação pendente.
+
+Resultado 2026-10-16: apenas ponto-controle-backup recriado, preservando rede adegaweb_net e credenciais privadas; banco e aplicação não reiniciados. Captura SQL real de 1.329.421 bytes em Backups/PontoControle/Banco, SHA256 remoto cf8319ccb8be0c71266c659edfacd441c6290a23aa1e3623c4b4286b399f47d1; nenhum volume de backup local montado. Retenção remota de quinze dias preservada. Compose corrigido para futuras instalações. Testes do helper e revisão independente Sentinela aprovados. Caddyfile preexistente não foi alterado por esta tarefa.
