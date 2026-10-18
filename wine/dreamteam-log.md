@@ -1572,6 +1572,24 @@ GitHub obrigatório: https://github.com/marcelstfgit/guiapreco.com.br . Projeto 
 
 Pendências materiais: processamento/indexação do Google, tag Associados Amazon, comissão individual depende de conta/programa próprio, rastreamento pessoal GuiaQR ainda não ativado, backup externo não configurado.
 
+## 2026-10-18 — Autenticação do host W1
+
+Solicitação pertence ao GuiaPreco, mas o arquivo do proxy compartilhado está
+montado deste diretório. Diagnóstico: W1 usa HTTP Basic no Caddy, independente
+do Selkies VPN. Único alvo autorizado: conta de w1.guiapreco.com.br. Preservar
+demais hosts e todas as modificações preexistentes do Caddyfile; nenhuma alteração
+em aplicação/banco Ponto Controle. Plano reversível e votos constam no log da
+raiz. Aplicar patch mínimo, validar e recarregar sem reiniciar navegador; conferir
+HTTP público e configuração estruturada. Senha/hash ativo ficam fora do Git.
+Concluído: import exclusivo W1 para arquivo root:root 0600 no volume persistente
+do proxy. A comparação JSON integral confirmou alteração apenas na conta de
+autenticação W1. Validate/reload aprovados; Caddy e W1 mantiveram ID/início/PID e
+zero reinícios. HTTPS público aceitou marcel (200, HTML Selkies), rejeitou
+anônimo/senha errada/usuário antigo com a nova senha (401), e manteve cinco
+famílias privadas em 404 autenticado. WebSocket de controle não foi aberto;
+nenhuma aba/sessão tocada. Revisão independente Sentinela aprovou o isolamento.
+Nenhum código, banco ou serviço da aplicação Ponto Controle foi alterado.
+
 ## 2026-10-16 — Backups remotos solicitados pelo usuário
 
 Veredito inicial: prosseguir com cautela. Pedido: mover os backups para área privada do Nextcloud imagens e impedir novas cópias persistentes no disco. Inspecionados AGENTS, dreamteam, conselho, compose e produtor ativo ponto-controle-backup. Risco principal: excluir a única cópia ou deixar rotina escrevendo local; mitigação: cópia em partes RAM, SHA256 por leitura integral, remoção local somente após confirmação técnica, sem fallback para disco. Produto: aprovar (libera disco); Arquitetura: aprovar (armazenamento remoto); Engenharia: aprovar (escopo restrito ao produtor); QA: ajustar até prova de captura real; Segurança: aprovar com pasta privada e segredo montado; Documentação: aprovar com log e reversão por Git. Plano: atualizar serviço de backup, validar o compose e o envio, recriar apenas o contêiner de backup; não recriar banco/aplicação. Reversão: recuperar script/compose anterior por Git e restaurar arquivos pelo Nextcloud quando necessário. Autorização explícita do usuário abrange mover cópias existentes e alterar as rotinas de todos os projetos; não há nova confirmação pendente.

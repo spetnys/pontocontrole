@@ -1098,6 +1098,37 @@ GitHub obrigatório: https://github.com/marcelstfgit/guiapreco.com.br . Projeto 
 
 Pendências materiais: processamento/indexação do Google, tag Associados Amazon, comissão individual depende de conta/programa próprio, rastreamento pessoal GuiaQR ainda não ativado, backup externo não configurado.
 
+## 2026-10-18 — Correção do acesso ao W1 do GuiaPreco
+
+Pedido explícito: configurar marcel com a senha informada pelo usuário em
+https://w1.guiapreco.com.br/. A alteração anterior atingiu outro Selkies na VPN;
+o host público tem autenticação HTTP Basic independente no Caddy compartilhado.
+Inspecionados AGENTS de raiz/wine, dreamteam/conselho, bloco exclusivo W1,
+mounts do proxy e configuração do contêiner do navegador. Decisão D3 reversível:
+mudar somente a conta HTTP Basic desse host, sem reiniciar W1 ou alterar outros
+hosts, redes, paths privados, volumes, perfis ou sessões. Plano: hash privado via
+stdin, patch mínimo, validar Caddy, comparar configuração estruturada e recarregar
+graciosamente; testar HTTPS real autenticado/anônimo e bloqueios privados.
+Reversão: reaplicar o bloco anterior mantido somente na memória operacional e
+recarregar a configuração validada. Não publicar senha/hash ativo no Git/log.
+O Caddyfile já tinha modificações preexistentes e não deve ser incluído no commit.
+Votos (síntese analítica): Produto/Arquitetura/Engenharia/Segurança/Documentação
+aprovar; QA ajustar até confirmar HTTP público. Veredito: prosseguir com cautela.
+Resultado: include privado persistente root:root 0600 em
+/data/guiapreco-security-auth/w1-auth.caddy; bloco W1 substituído por import.
+Configuração ativa coincidia com o arquivo antes; comparação estrutural de toda
+a configuração adaptada confirmou delta apenas na conta HTTP Basic W1, com
+demais hosts/rotas idênticos. Caddy validate e reload aprovados sem restart.
+HTTPS público com certificado validado: marcel 200 e HTML Selkies; anônimo e
+senha inválida 401 com desafio Basic; usuário sheila com a nova senha 401.
+Conta antiga removida da configuração. Rotas /json/version, /devtools/browser/test,
+/v1/test, /api/pelorus/test e /pelorus/test autenticadas continuam 404.
+IDs, StartedAt, PIDs e restart count de Caddy/W1 permaneceram iguais. Nenhuma aba
+ou sessão manipulada; handshake WebSocket de controle não foi aberto para evitar
+interferir no desktop em uso. Sentinela aprovou a arquitetura/boundary e exigiu
+essa validação HTTPS. Caddyfile preexistente sujo e hashes privados ficam fora
+do commit; este registro não contém credenciais.
+
 ## 2026-10-16 — Backups remotos solicitados pelo usuário
 
 Veredito inicial: prosseguir com cautela. Pedido: mover os backups para área privada do Nextcloud imagens e impedir novas cópias persistentes no disco. Inspecionados AGENTS, dreamteam, conselho, compose e produtor ativo ponto-controle-backup. Risco principal: excluir a única cópia ou deixar rotina escrevendo local; mitigação: cópia em partes RAM, SHA256 por leitura integral, remoção local somente após confirmação técnica, sem fallback para disco. Produto: aprovar (libera disco); Arquitetura: aprovar (armazenamento remoto); Engenharia: aprovar (escopo restrito ao produtor); QA: ajustar até prova de captura real; Segurança: aprovar com pasta privada e segredo montado; Documentação: aprovar com log e reversão por Git. Plano: atualizar serviço de backup, validar o compose e o envio, recriar apenas o contêiner de backup; não recriar banco/aplicação. Reversão: recuperar script/compose anterior por Git e restaurar arquivos pelo Nextcloud quando necessário. Autorização explícita do usuário abrange mover cópias existentes e alterar as rotinas de todos os projetos; não há nova confirmação pendente.
