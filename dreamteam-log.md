@@ -1111,7 +1111,8 @@ stdin, patch mínimo, validar Caddy, comparar configuração estruturada e recar
 graciosamente; testar HTTPS real autenticado/anônimo e bloqueios privados.
 Reversão: reaplicar o bloco anterior mantido somente na memória operacional e
 recarregar a configuração validada. Não publicar senha/hash ativo no Git/log.
-O Caddyfile já tinha modificações preexistentes e não deve ser incluído no commit.
+O Caddyfile já tinha modificações preexistentes: somente o hunk W1 pode ser
+versionado, sem incorporar as demais alterações nem adicionar hashes ativos.
 Votos (síntese analítica): Produto/Arquitetura/Engenharia/Segurança/Documentação
 aprovar; QA ajustar até confirmar HTTP público. Veredito: prosseguir com cautela.
 Resultado: include privado persistente root:root 0600 em
@@ -1126,7 +1127,13 @@ Conta antiga removida da configuração. Rotas /json/version, /devtools/browser/
 IDs, StartedAt, PIDs e restart count de Caddy/W1 permaneceram iguais. Nenhuma aba
 ou sessão manipulada; handshake WebSocket de controle não foi aberto para evitar
 interferir no desktop em uso. Sentinela aprovou a arquitetura/boundary e exigiu
-essa validação HTTPS. Caddyfile preexistente sujo e hashes privados ficam fora
+essa validação HTTPS. A revisão de durabilidade exige versionar cirurgicamente
+somente a substituição W1 por import, para impedir reativar a conta antiga em
+checkout futuro. A inspeção efetiva de HEAD mostrou que a rota W1 inteira ainda
+não existia no Git (36 linhas de Caddyfile); por isso o índice curado acrescenta
+somente seu bloco atual, com import privado e os matchers/upstream/headers já
+presentes na produção. Não se incorpora nenhum outro bloco do arquivo sujo.
+Demais alterações preexistentes e hashes privados ficam fora
 do commit; este registro não contém credenciais.
 
 ## 2026-10-16 — Backups remotos solicitados pelo usuário
